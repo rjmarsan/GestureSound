@@ -115,8 +115,17 @@ public class GestureSound extends MTComponent {
 				}
 				System.out.println("durVal:"+durVal);
 				return durVal; 
-			}
 		}
+	}
+	public static class RateMap implements  ParamMap { 
+		public float sensitivity = 1.0f;
+		public static float rateVal = 1.0f;
+		public float map(float in) {
+			rateVal = 1+in*sensitivity;
+			System.out.println("rate:"+rateVal);
+			return rateVal; }
+	}
+
 	public static class VelocityMap implements  ParamMap { 
 		public float sensitivity = 0.08f;
 		public float map(float in) {return in*sensitivity; }
@@ -135,8 +144,8 @@ public class GestureSound extends MTComponent {
 			engine.addToMap("velocity", synth1, "trigRate", 
 					new TrigRateMap(),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
-			engine.addToMap("curvature", synth1, "dur", 
-					new DurMap(),
+			engine.addToMap("curvature", synth1, "rate", 
+					new RateMap(),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
 			engine.addToMap("velocity", synth1, "amp", 
 					new VelocityMap(), 
