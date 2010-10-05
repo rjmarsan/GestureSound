@@ -15,7 +15,7 @@ public class Curvature extends Quality {
 	
 	public Curvature(GestureEngine engine) {
 		super(engine);
-		filter = KalmanFilter.buildKF(0.1, 0.01, 0.1);
+		filter = KalmanFilter.buildKF(0.1, 5, 10);
 		filter.setX(new Matrix(new double[][]{{0.01}, {0.01}, {0.01}}));
 		filter.predict();
 	}
@@ -24,13 +24,13 @@ public class Curvature extends Quality {
 	public void update(InputCursor in) {
 		float val=0.0f;
 		
-		val = (float) (findCurvature(in)/(Math.PI));
-		
+		val = (float) (findCurvature(in)/(Math.PI)/in.getVelocityVector().w);
+		System.out.println("Curvature: "+val);
 		filter.correct(new Matrix(new double[][]{{val}}));
 		filter.predict();
-		System.out.println("0:"+filter.getX().get(0,0));
-		System.out.println("1:"+filter.getX().get(1,0));
-		System.out.println("2:"+filter.getX().get(2,0));
+		//System.out.println("0:"+filter.getX().get(0,0));
+		//System.out.println("1:"+filter.getX().get(1,0));
+		//System.out.println("2:"+filter.getX().get(2,0));
 		val = (float) filter.getX().get(2,0);
 		//System.out.println("Curvature: "+val);
 		engine. gestureQualityChange("curvature", val);
@@ -43,9 +43,9 @@ public class Curvature extends Quality {
 		AbstractCursorInputEvt prev 	= events.get(events.size()-2);
 		AbstractCursorInputEvt prev2 	= events.get(events.size()-3);
 		if (prev == null)
-			prev = posEvt;
+			return 0;
 		if (prev2 == null)
-			prev2 = posEvt;
+			return 0;
 		return getAngle(posEvt, prev)-getAngle(prev, prev2);
 	}
 	private float getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {

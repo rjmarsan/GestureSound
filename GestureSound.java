@@ -22,6 +22,7 @@ public class GestureSound extends MTComponent {
 	GestureEngine engine;
 	
 	SC sc;
+	InputCursor in;
 
 	public GestureSound(PApplet applet, final AbstractScene scene) {
 		super(applet);
@@ -37,6 +38,7 @@ public class GestureSound extends MTComponent {
         			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
         				InputCursor m = posEvt.getCursor();
         				engine.updateEngine(m);
+        				in = m;
         			}
         		}
         		return false;
@@ -64,6 +66,11 @@ public class GestureSound extends MTComponent {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
+		if (in != null) {
+			for (AbstractCursorInputEvt evt : in.getEvents()) {
+				g.rect(evt.getPosX(), evt.getPosY(), 10, 10);
+			}
+		}
 	}
 
 }
