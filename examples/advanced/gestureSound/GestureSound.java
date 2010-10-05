@@ -1,5 +1,6 @@
 package advanced.gestureSound;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.mt4j.components.MTComponent;
@@ -9,11 +10,12 @@ import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.sceneManagement.AbstractScene;
 
-import advanced.gestureSound.gestures.GestureEngine;
-import advanced.gestureSound.gestures.GestureEngine.ParamMap;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import advanced.gestureSound.gestures.GestureEngine;
+import advanced.gestureSound.gestures.GestureEngine.ParamMap;
+import advanced.gestureSound.gestures.GestureEngine.Zone;
+import de.sciss.jcollider.Buffer;
 import de.sciss.jcollider.Synth;
 
 public class GestureSound extends MTComponent {
@@ -28,7 +30,7 @@ public class GestureSound extends MTComponent {
 		super(applet);
 		// TODO Auto-generated constructor stub
 		this.applet = applet;
-		this.engine = new GestureEngine();
+		this.engine = new GestureEngine(applet);
 		
         scene.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
@@ -55,8 +57,23 @@ public class GestureSound extends MTComponent {
 	
 	void setupGestures() {
 		try {
-			Synth synth1 = new Synth("stereosine", new String[] {"out", "freq"}, new float[] { 0, 400f }, sc.grpAll);
-			engine.addToMap("curvature", synth1, "freq", new ParamMap() { public float map(float in) {return (float) (Math.log((1+in*10)/2)*-4000); }});
+			File f = new File("data/sounds/amiu.aif");
+			System.out.println("Loading sample at: "+f.getAbsolutePath());
+			final Buffer b = Buffer.read(sc.server,f.getAbsolutePath());
+			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
+			engine.addToMap("curvature", synth1, "centerPos", 
+					new ParamMap() { public float map(float in) {return (float)((in*5+0.5)*b.getDuration()); }},
+					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
+			engine.addToMap("velocity", synth1, "trigRate", 
+					new ParamMap() { public float map(float in) {return in*4; }},
+					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
+			engine.addToMap("curvature", synth1, "dur", 
+					new ParamMap() { public float map(float in) {return (float)((0.3+in)*b.getDuration()); }},
+					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
+			engine.addToMap("velocity", synth1, "amp", 
+					new ParamMap() { public float map(float in) {return in/10; }},
+					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

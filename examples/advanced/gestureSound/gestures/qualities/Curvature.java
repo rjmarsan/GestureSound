@@ -15,7 +15,7 @@ public class Curvature extends Quality {
 	
 	public Curvature(GestureEngine engine) {
 		super(engine);
-		filter = KalmanFilter.buildKF(0.1, 5, 10);
+		filter = KalmanFilter.buildKF(0.2, 5, 10);
 		filter.setX(new Matrix(new double[][]{{0.01}, {0.01}, {0.01}}));
 		filter.predict();
 	}
@@ -24,16 +24,16 @@ public class Curvature extends Quality {
 	public void update(InputCursor in) {
 		float val=0.0f;
 		
-		val = (float) (findCurvature(in)/(Math.PI)/in.getVelocityVector().w);
-		System.out.println("Curvature: "+val);
+		val = (float) (findCurvature(in)/(Math.PI));
+		//System.out.println("Curvature: "+val);
 		filter.correct(new Matrix(new double[][]{{val}}));
 		filter.predict();
 		//System.out.println("0:"+filter.getX().get(0,0));
 		//System.out.println("1:"+filter.getX().get(1,0));
 		//System.out.println("2:"+filter.getX().get(2,0));
-		val = (float) filter.getX().get(2,0);
-		//System.out.println("Curvature: "+val);
-		engine. gestureQualityChange("curvature", val);
+		val = (float) filter.getX().get(0,0);
+		System.out.println("Curvature: "+val);
+		engine. gestureQualityChange("curvature", val, in);
 	}
 	private float findCurvature(InputCursor in) {
 		if (in.getEventCount() < 3)
@@ -46,7 +46,27 @@ public class Curvature extends Quality {
 			return 0;
 		if (prev2 == null)
 			return 0;
-		return getAngle(posEvt, prev)-getAngle(prev, prev2);
+		float angle1 = getAngle(posEvt, prev);
+		float angle2 = getAngle(prev, prev2);
+		if (angle1 == 0.0f || angle2 == 0.0f) {
+			return 0.0f;
+		}		
+		float result = angle1-angle2;
+		if (result > Math.PI) {
+			//System.out.println("Result too big! taking other atan2: "+result+" New: "+(2*Math.PI-result));
+			
+			result = (float) (2*Math.PI-result);
+		}
+		else if (result < -1*Math.PI) {
+			//System.out.println("Result too small! taking other atan2: "+result+" New: "+(2*Math.PI+result));
+
+			result = (float) (2*Math.PI+result);
+		}
+		
+		//System.out.println("Curvature: "+result+" First Angle:"+angle1+" Second Angle: "+angle2);
+
+		return result;
+
 	}
 	private float getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
 		return (float) Math.atan2(ev1.getPosX()-ev2.getPosX(), ev1.getPosY()-ev2.getPosY());
