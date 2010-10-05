@@ -1,0 +1,36 @@
+JCollider needs your help!
+
+unfortunately I don't have enough time to devote to JCollider anymore.
+During the course of 2006 and 2007, I need to turn all of my software
+projects into multiple-developers projects to gain resources for new
+projects.
+
+I'm looking for people who are willing to help and co-develop JCollider.
+
+Minimum skills of developers:
+- good experience in java programming
+- good experience in supercollider programming
+
+Optimum skills of developers:
+- interest in electroacoustic / experimental music
+- interest in developing application on top of jcollider
+
+What i offer:
+- help with all programming questions
+- help with finishing documentation
+- help with understanding my style of programming
+- help with setting up development mailing lists and resources
+- help to move the project to a cross-platform IDE (e.g. Eclipse)
+
+Suggested next development steps:
+- finish API documentation
+- integration of missing methods (mirrored from sclang)
+- extensive testing of all methods
+- improving Server class robustness
+
+Possible long term goals:
+- evaluating pros/cons for transition to java 1.5
+- making it rely more on java's strengths and loosening connection to sclang
+
+
+(oct-2006 sciss)

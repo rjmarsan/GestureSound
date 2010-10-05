@@ -1,0 +1,13 @@
+Name: Goodbye World!
+Path: stage2
+Audio: {audio}/stage2
+
+Loop: loop1.wav
+Loop: loop2.wav
+Loop: loop3.wav	
+Loop: loop4.wav
+Loop: loop5.wav
+Loop: loop6.wav
+
+Level: debug.dat
+

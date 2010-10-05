@@ -1,0 +1,47 @@
+; animation format
+; Anim: name
+; Length: time
+; Loop: (no args.  omit for no looping)
+; :		valuename, 	valuename, 	valuename, ...
+; time: val trans,	val trans,	val trans, ... 
+; time: ...
+
+; yes, that colon in line 5 has to be there
+
+; keyframe transition format:
+; (type)(arg|arg|arg...)(r=reversed)(*=all) 
+;
+; types: (none) = linear
+;		 L = linear			
+;		 P = power		args = power
+;		 D = double		args = power
+;
+; examples:
+; L = Linear
+; L* = all Linear
+; P2 = PowerCurve with power 2.0
+; P2r = reversed PowerCurves with power 2.0
+; D1.5* = all DoubleCurve with power 1.5
+; D3.0r* = all reversed DoubleCurves with power 3.0
+; X1|2|3 = I don't know what X is, but it takes three arguments (1, 2, and 3)
+
+Anim: created
+Length: 1.2
+:		Radius,		StrokeAlpha,	FillAlpha,	HandleAlpha,
+0.0:	0 P2r,		0 D2,			3 P2,		0,			
+0.8:	1.15 D1.5,	1,				2.5,		0 P2,		
+1.2:	1,			1,				1,			1,			
+
+Anim: selected
+Length: 0.3
+:		HandleAlpha,	Glow
+0.0:	1 P2r,			0 P2r,
+0.3:	0,				0.3,
+
+Anim: destroyed
+Length: 4.5
+:		Radius,		StrokeAlpha,	FillAlpha,	HandleAlpha
+0.0:	1,			1 ,				1,			1 P2,
+1.0:	1,			1 P1.5,			1 P1.5,		0,
+2.5:	1 P4,		0.8 D2,			0.8 D2,		0,
+4.5:	0,			0,				0,			0,

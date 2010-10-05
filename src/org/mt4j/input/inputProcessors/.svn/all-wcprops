@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/inputProcessors
+END
+IGestureEventListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/inputProcessors/IGestureEventListener.java
+END
+MTGestureEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/inputProcessors/MTGestureEvent.java
+END
+IInputProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/inputProcessors/IInputProcessor.java
+END

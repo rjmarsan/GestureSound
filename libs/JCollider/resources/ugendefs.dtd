@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- 
+	DTD for a list of available ugens
+	lastmod : 04-sep-05
+-->
+
+<!ENTITY audio "gaga">
+<!ENTITY control "gogo">
+
+<!ELEMENT ugendefs (ugen*)>
+<!ELEMENT ugen (arg*,outputs?,special*)>
+<!ATTLIST ugen
+		  class		CDATA		#REQUIRED
+		  rates		NMTOKENS	#REQUIRED
+		  range		(unipolar|bipolar)	#IMPLIED
+>
+<!ELEMENT arg EMPTY>
+<!ATTLIST arg
+		  name		CDATA		#REQUIRED
+		  def		CDATA 		#IMPLIED
+		  type		(number|array)	#IMPLIED
+>
+<!ELEMENT outputs EMPTY>
+<!ATTLIST outputs
+		  type		(fixed|arg|arraySize)	#IMPLIED
+		  val		CDATA		#IMPLIED
+		  mul		CDATA		#IMPLIED
+>
+<!ELEMENT special EMPTY>
+<!ATTLIST special
+		  idx		CDATA		#REQUIRED
+		  name		CDATA 		#REQUIRED
+>

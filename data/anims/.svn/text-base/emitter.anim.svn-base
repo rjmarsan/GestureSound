@@ -1,0 +1,15 @@
+
+Anim: created
+Length: 1.2
+:		Radius,		Radius2,	Alpha,	
+0.0:	0.5 P2r,	0 D2,		0 P2r,									
+0.8:	1.1 D2,		1,			1,						
+1.2:	1,			1,			1,
+
+Anim: destroyed
+Length: 4.5
+:		Radius,		Radius2,	Alpha,	
+0.0:	1,			1,			1,			
+1.0:	1,			1 P2,		1,		
+2.5:	1 P2,		0.9 P2r,	1 D2,		
+4.5:	0.5,		0,			0,			

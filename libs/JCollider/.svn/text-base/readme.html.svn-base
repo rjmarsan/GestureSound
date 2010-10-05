@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<HEAD>
+	<TITLE>JCollider Readme</TITLE>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+	<LINK REL="stylesheet" TYPE="text/css" HREF="help/stylesheet.css">
+	<STYLE TYPE="text/css"><!--
+BODY {
+	background:#405060;
+	margin:16px 124px;
+	color:#C0D0E0;
+	font-family:"Helvetica Neue Light" "Helvetica" "Arial" "sans-serif";
+	font-size:14px;
+}
+P {
+}
+
+SMALL {
+	font-size:60%;
+}
+
+.smaller {
+	font-size:80%;
+}
+
+HR {
+	border:dotted 1px;
+	margin:16px 0px;
+}
+
+.remote {
+	margin-top:48px;
+}
+
+.lightRed {
+	color:#FF7090;
+}
+
+H3 {
+	margin-left:-32px;
+}
+
+H1, H2, H3, CODE, PRE {
+	font-family:"Futura" "Helvetica" "Arial" "sans-serif";
+	font-weight:normal;
+	color:#E0F0FF;
+}
+
+H4 {
+	font-style:italic;
+	font-weight:normal;
+	font-size:100%;
+}
+
+.history {
+	padding-left:48px;
+}
+
+A {
+	font-family:"Futura" "Helvetica" "Arial" "sans-serif";
+	font-style:italic;
+	text-decoration:none;
+	color:#A0D0FF;
+}
+a:hover {
+	color:#FFFFFF;
+}
+TD.when {
+	white-space:nowrap;
+	padding-right:32px;
+}
+	-->
+	</STYLE>
+</HEAD>
+<BODY>
+<h1>
+JCollider <small>-- version 0.36 (built 11-oct-09) --</small>
+</h1>
+<h3>statement</h3>
+<TABLE><TR><TD VALIGN="top"><IMG SRC="resources/de/sciss/jcollider/application.png" ALT=""></TD><TD><p>
+JCollider is a java library to build clients for the SuperCollider server architecture. While staying rather compact, it provides a lot of the functionality found in the SuperCollider Language (<code>sclang</code>) application. JCollider uses the same concept of mirroring the server (<code>scsynth</code>) objects on the client side as <code>sclang</code>, and its API is fairly similar to classes found in <code>sclang</code>. Some additional GUI helper classes are provided.
+</p>
+<!-- <h3>license</h3> -->
+<P>
+JCollider is (C)opyright 2005-2009 by Hanns Holger Rutz. All rights reserved. JCollider is released under the <A HREF="licenses/JCollider-License.txt">GNU General Public License</A> which protects your freedom and ensures that products built using this library are also free software. The software comes with absolutely no warranties.
+</P></TD></TR></TABLE><p>
+To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>.
+For project status, API and current version, visit <a href="http://www.sciss.de/jcollider/" class="ext">www.sciss.de/jcollider</a>.
+</p>
+<h3>
+requirements / installation
+</h3>
+<p>
+JCollider is platform independant, but requires a <A HREF="http://java.sun.com" CLASS="ext">Java</A>&trade; 1.4 SE runtime environment (JRE) or development kit (JDK). since it is designed to control a supercollider server, you will have to install one, if you haven't yet done so. the main supercollider portal is <A HREF="http://supercollider.sf.net" CLASS="ext">supercollider.sf.net</A>. JCollider uses the NetUtil OSC library which is licensed under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and which is included in this release. To access the source code of NetUtil, please download the full package from <a href="http://www.sciss.de/netutil/" class="ext">www.sciss.de/netutil</a>.
+<P>
+<h3>download</h3>
+<P>
+The current version can be downloaded here:
+</P>
+<UL>
+<LI><A HREF="http://sourceforge.net/projects/jcollider" CLASS="ext">sourceforge.net/projects/jcollider</A></LI>
+</UL>
+<h3>
+documentation
+</h3>
+<p>
+Documentation comes in the form of JavaDoc. The generate the docs, open a terminal, <code>cd</code> into the JCollider folder and run:
+</P>
+<PRE>
+$ ant doc
+</PRE>
+<P>
+there is no real tutorial or manual at the moment, however if you are familiar with <code>sclang</code>, it is straight forward to get started. the API documentation (see below) is not yet complete but already quite robust.
+</P>
+<UL>
+<LI><A HREF="doc/api/index.html">API index (local copy)</A></LI>
+<LI><A HREF="http://www.sciss.de/jcollider/doc/api/index.html" CLASS="ext">API index (online)</A></LI>
+</UL>
+<h3>
+compilation / usage
+</h3>
+<P>
+<SPAN CLASS="lightRed">Please read the <A HREF="DevelopersNeeded!.txt">DevelopersNeeded</A> note.</SPAN>
+</P><P>
+The downloaded archive comes already with a built version of JCollider, that is <code>build/JCollider.jar</code> to you may not need to compile it yourself.
+</P><P>
+The source code can be compiled using Eclipse SDK 3.2+ (<A HREF="http://www.eclipse.org" CLASS="ext">www.eclipse.org</A>) and Apache Ant 1.6.5+ (<A HREF="http://ant.apache.org/" CLASS="ext">ant.apache.org</A>). You need to install <A HREF="http://ant-contrib.sourceforge.net" CLASS="ext">Ant-Contrib</A> as well (first install Ant if you do not have it, then download Ant-Contrib and copy <code>ant-contrib.jar</code> into Ant's <code>lib</code> folder). The Eclipse project file is configured to run the regular Ant build file. You can make a clean build just with Ant from the terminal:
+</P><PRE>$ ant clean jar
+$ ant test
+</PRE>
+<P>
+The <code>&quot;test&quot;</code> will just launch the JCollider demo so you can see if the build works; you can leave away that task. By default, NetUtil is included in the resulting file <code>build/JCollider.jar</code>. If wish to link externally to it, you can build like this:
+</P><PRE>$ ant -Dplain=true clean jar
+</PRE>
+<P>
+the original demo project is included in this build and can be executed as follows:
+</P>
+<PRE>$ java -jar build/JCollider.jar --test1
+</PRE>
+<P>
+the demo opens two frames, one containing a list of synth defs, the other one being a small server window just like you know from <code>sclang</code>. first check, that the path name to the application is correct, alternatively start the server manually before launching the demo. now select a synth definition from the tables and press the play button. to stop all synths, press the stop button. to view the synth def, press one of the next two buttons. to see a tree of all known nodes, press the right most button.
+</P><P>
+note that some synth defs will only run on mac os because they use mac-only ugens (e.g. <code>MouseX</code>). also note that <code>CombDist</code> and <code>RingMod</code> are insert effects which have to be started <I>before</I> starting an oscillator synth def.
+</P>
+<P>Alternatively, <code>--test2</code> runs a demo for generating a SynthDef with controls which can be operated from a GUI.
+</P><P>
+<P>
+when starting to write your own application, you may also want to have a look at <A HREF="http://www.sciss.de/eisenkraut" CLASS="ext">Eisenkraut</A> which uses the JCollider library. feel free to contact me if you are interested in developing things with JCollider, or even more if you like to co-develop JCollider. feel free to send me interesting music (not by email!).
+</P>
+<h3>
+to-do / known issues
+</h3>
+<UL>
+<LI>proper documentation of Synth, Group, Bus</LI>
+<LI>add missing methods from sclang counterparts</LI>
+<LI>add GUI panel for server options</LI>
+</UL>
+<h3>Change History</h3>
+<h4>v0.36 (sep 2009 - SVN rev. 25)</h4>
+<UL>
+<LI>Bus: adding set(n)(Msg), get(n)(Msg), fill(Msg)</LI>
+</UL>
+<h4>v0.35 (sep 2009 - SVN rev. 19)</h4>
+<UL>
+<LI>Updated ugen infos: DiskOut number of outputs</LI>
+</UL>
+<h4>v0.34 (jul 2009 - SVN rev. 16)</h4>
+<UL>
+<LI>Updated ugen infos from latest SuperCollider</LI>
+<LI>Control: possible to create multiinput control with just one name</LI>
+<LI>Server: default bufsize 64k, better boot thread quitting</LI>
+<LI>Synth: get(n)(Msg) added, grain added</LI>
+<LI>Fixed some threading issues</LI>
+<LI>Uses ScissLib now</LI>
+<LI>Uses ant doc target</LI>
+</UL>
+<h4>v0.32 (feb 2008 - SVN rev. 3)</h4>
+<UL>
+<LI>ServerOptions: added verbosity and rendezvous</LI>
+<LI>Node: added register, unregister</LI>
+<LI>UGenInfo: added binary file format (much faster)</LI>
+</UL>
+<h4>v0.31 (nov 2007)</h4>
+<UL>
+<LI>switched over to Eclipse IDE and Ant build tool</LI>
+<LI>Buffer: added getDuration, allocConsecutive, allocReadChannel, readChannel methods</LI>
+</UL>
+<h4>v0.30 (jul 2007)</h4>
+<UL>
+<LI>updated for new NetUtil version</LI>
+</UL>
+<h4>v0.29 (oct 2006)</h4>
+<UL>
+<LI>updated for new NetUtil version; allows to talk to server using TCP</LI>
+<LI>bug fixes and improvements in NodeWatcher</LI>
+<LI>slight modfications of OSCMultiResponder and OSCResponderNode, see <A HREF="readme_api_changes.txt">readme_api_changes.txt</A> for details</LI>
+<LI>v0.291 fixes missing server.start() calls in demos and boot thread, includes TCP fixes from NetUtil 0.31</LI>
+<LI>v0.292 fixes a bug in NodeWatcher.dispose()</LI>
+</UL>
+<h4>v0.28 (jul 2006)</h4>
+<UL>
+<LI>incorporates some sclang updates, mainly variable bus allocator classes in ServerOptions and Server.</LI>
+<LI>Server's alive thread more robust against occasional server irresponsiveness</LI>
+<LI>extended method documentation</LI>
+<LI>added a couple of missing methods</LI>
+<LI>added ControlSpec, Warp, EZSlider</LI>
+<LI>bugfixes (OSCMultiResponder et al.)</LI>
+</UL>
+<h4>v0.27 (feb 2006)</h4>
+<UL>
+<LI>bugfix in SynthDef: recognizes unnamed controls generated from arrays</LI>
+</UL>
+<h4>v0.26 (nov 2005)</h4>
+<UL>
+<LI>bugfix in SynthDef: recognizes LagControl, TrigControl</LI>
+</UL>
+<h4>v0.24 (oct 2005)</h4>
+<UL>
+<LI>adds write() methods to Buffer</LI>
+<LI>added /fail support for Server.sendMsgSync() ; added Server.sendBundleSync()</LI>
+</UL>
+<h4>v0.23 (oct 2005)</h4>
+<UL>
+<LI>new NodeWatcher class, new GUI classes NodeTreeManager and NodeTreePanel</LI>
+<LI>Node is abstract now, and implements the TreeNode interface which nicely interacts with the new GUI classes ; Nodes can be named for human readability</LI>
+<LI>removed setGroup, setRunning and setPlaying statements from the Node classes; this job must be explictely done now by a NodeWatcher or the like, which is a much cleaner solution</LI>
+<LI>after booting, server will call initTree before dispatching the server event</LI>
+</UL>
+<h4>v0.21 (sep 2005)</h4>
+<UL>
+<LI>fixed bug in Server.boot() (didn't reset the booting status when boot failed)</LI>
+</UL>
+<h4>v0.2 (sep 2005)</h4>
+<UL>
+<LI>first version separately released. alpha stadium, probably totally buggy</LI>
+</UL>
+</BODY></HTML>

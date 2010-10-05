@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider
+END
+GraphElemArray.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/GraphElemArray.java
+END
+NodeWatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/NodeWatcher.java
+END
+LagControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/LagControl.java
+END
+Synth.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Synth.java
+END
+TrigControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/TrigControl.java
+END
+ServerEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/ServerEvent.java
+END
+Buffer.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Buffer.java
+END
+UGenInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/UGenInfo.java
+END
+OSCResponderNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/OSCResponderNode.java
+END
+ServerListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/ServerListener.java
+END
+Constants.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Constants.java
+END
+ControlDesc.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/ControlDesc.java
+END
+Control.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Control.java
+END
+OSCMultiResponder.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/OSCMultiResponder.java
+END
+ServerOptions.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/ServerOptions.java
+END
+UniqueID.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/UniqueID.java
+END
+SynthDef.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/SynthDef.java
+END
+Node.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Node.java
+END
+NodeEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/NodeEvent.java
+END
+Bus.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Bus.java
+END
+Group.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Group.java
+END
+UGen.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/UGen.java
+END
+NodeIDAllocator.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/NodeIDAllocator.java
+END
+GraphElem.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/GraphElem.java
+END
+Server.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Server.java
+END
+JCollider.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/JCollider.java
+END
+ContiguousBlockAllocator.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/ContiguousBlockAllocator.java
+END
+PowerOfTwoAllocator.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/PowerOfTwoAllocator.java
+END
+UGenInput.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/UGenInput.java
+END
+UGenChannel.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/UGenChannel.java
+END
+Constant.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/Constant.java
+END
+NodeListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/NodeListener.java
+END
+BlockAllocator.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/BlockAllocator.java
+END

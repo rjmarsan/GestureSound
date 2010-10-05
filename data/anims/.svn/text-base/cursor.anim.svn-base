@@ -1,0 +1,5 @@
+Anim: cursor
+Length: 0.6
+:		Radius,	Radius2,	Alpha,		Alpha2
+0.0:	6,		6,			0.5 P1.8r,	0
+0.6:	40,		6,			0,			0.2

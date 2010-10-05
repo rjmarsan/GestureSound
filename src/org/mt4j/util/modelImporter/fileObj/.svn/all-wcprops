@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/modelImporter/fileObj
+END
+ModelObjFileFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/modelImporter/fileObj/ModelObjFileFactory.java
+END
+ObjectFileParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/modelImporter/fileObj/ObjectFileParser.java
+END
+ObjectFileMaterials.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/modelImporter/fileObj/ObjectFileMaterials.java
+END
+ParsingErrorException.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/modelImporter/fileObj/ParsingErrorException.java
+END

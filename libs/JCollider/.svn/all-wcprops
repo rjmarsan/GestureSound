@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/26/branches/munki/lib/JCollider
+END
+readme.html
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/26/branches/munki/lib/JCollider/readme.html
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/26/branches/munki/lib/JCollider/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/26/branches/munki/lib/JCollider/.project
+END
+DevelopersNeeded!.txt
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/26/branches/munki/lib/JCollider/DevelopersNeeded!.txt
+END
+readme_api_changes.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/26/branches/munki/lib/JCollider/readme_api_changes.txt
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/26/branches/munki/lib/JCollider/build.xml
+END

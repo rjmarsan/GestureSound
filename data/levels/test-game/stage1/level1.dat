@@ -1,0 +1,45 @@
+; identifiers are not case sensitive
+; size is not absolute.  Level gets stretched to fill screen
+
+Size: 160, 90
+Name: Stage 1
+
+; indented lines belong to previous unindented line
+Emitter: 80, 80
+	Radius: 20
+	Color: white
+	Direction: 90, 0		; direction variance
+	Rate: 30
+	Velocity: 12
+	
+Collector: 50, 40
+	Radius: 90
+	Color: white
+	Loop: 0
+	
+Colorer: 80, 30
+	Radius: 80
+	Mode: nomove, nosize
+	Color: red
+	
+Colorer: 120, 60
+	Radius: 40
+	Mode: nomove
+	Colore: white
+	
+Collector: 120, 20
+	Radius: 90
+	Color: red
+	Maxfill: 5
+	Loop: 1
+	
+Director: 100, 80
+	Radius: 60, 20, 100		; radius, min, max
+	Direction: 0
+	Accel: 100
+	
+Attractor: 60, 80
+	Radius: 90, 20, 120
+	Accel: 120
+
+	

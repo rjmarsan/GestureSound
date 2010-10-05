@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition
+END
+BlendTransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/BlendTransition.java
+END
+ITransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/ITransition.java
+END
+FlipTransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/FlipTransition.java
+END
+FadeTransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/FadeTransition.java
+END
+SlideTransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/SlideTransition.java
+END
+AbstractTransition.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/sceneManagement/transition/AbstractTransition.java
+END

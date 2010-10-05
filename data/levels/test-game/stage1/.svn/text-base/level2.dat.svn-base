@@ -1,0 +1,21 @@
+Size: 160, 90
+Name: Stage 2
+
+; set minimum volume of first loop to 1
+Loop: 0
+	Volume: 1
+
+Emitter: 80, 45
+	Radius: 25
+	Color: Yellow
+	Direction: 0
+	Rate: 40
+	Velocity: 15
+	
+Collector: 80, 50
+	Radius: 60
+	Loop: 1
+	
+Attractor: 40, 45
+	Radius: 70, 20, 400
+	Accel: 100

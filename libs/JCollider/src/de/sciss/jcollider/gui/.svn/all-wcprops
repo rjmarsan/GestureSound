@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui
+END
+LogTextArea.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/LogTextArea.java
+END
+NodeTreeManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NodeTreeManager.java
+END
+EZSlider.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/EZSlider.java
+END
+NumberSpace.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NumberSpace.java
+END
+NodeTreePanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NodeTreePanel.java
+END
+ServerPanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/ServerPanel.java
+END
+SynthDefDiagram.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/SynthDefDiagram.java
+END
+Warp.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/Warp.java
+END
+NumberEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NumberEvent.java
+END
+ControlSpec.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/ControlSpec.java
+END
+NumberField.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NumberField.java
+END
+NumberListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/26/branches/munki/lib/JCollider/src/de/sciss/jcollider/gui/NumberListener.java
+END

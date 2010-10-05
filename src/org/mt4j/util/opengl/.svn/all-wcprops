@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl
+END
+GLConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLConstants.java
+END
+GluTrianglulator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GluTrianglulator.java
+END
+GLMaterial.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLMaterial.java
+END
+GLStateHolder.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLStateHolder.java
+END
+GLStencilUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLStencilUtil.java
+END
+GLTexture.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLTexture.java
+END
+GLTextureParameters.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLTextureParameters.java
+END
+GLFBO.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLFBO.java
+END
+FboStack.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/FboStack.java
+END
+GLuTesselator.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/opengl/GLuTesselator.java
+END

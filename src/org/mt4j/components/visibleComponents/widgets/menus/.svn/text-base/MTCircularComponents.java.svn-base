@@ -1,0 +1,177 @@
+package org.mt4j.components.visibleComponents.widgets.menus;
+
+import org.mt4j.components.MTComponent;
+import org.mt4j.components.visibleComponents.font.FontManager;
+import org.mt4j.components.visibleComponents.font.IFont;
+import org.mt4j.components.visibleComponents.shapes.AbstractShape;
+import org.mt4j.components.visibleComponents.shapes.MTPolygon;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle;
+import org.mt4j.components.visibleComponents.shapes.MTRectangle.PositionAnchor;
+import org.mt4j.components.visibleComponents.widgets.MTTextArea;
+import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.gestureAction.DefaultButtonClickAction;
+import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputProcessors.IGestureEventListener;
+import org.mt4j.input.inputProcessors.MTGestureEvent;
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
+import org.mt4j.util.MTColor;
+import org.mt4j.util.math.Vector3D;
+import org.mt4j.util.math.Vertex;
+
+import processing.core.PApplet;
+
+/**
+ * This class houses the contents of the MTCircularButton.  Made to be easily rotatable, etc.
+ * @author rj
+ *
+ */
+public class MTCircularComponents extends MTRectangle {
+	
+	MTCircularItem parent;  /*important for certain functions */
+	
+	public static MTColor TRANSPARENT = new MTColor(0,0,0,0);
+	MTTextArea textArea;   /* the text area for the button */
+	MTPolygon triangle;    /* The triangle to indicate children/open status */
+
+	
+	float textPaddingFromCenter = 20f;
+	MTColor textColor = new MTColor(0,0,0);
+	float textPadding = 1; //distance from text to inner radius
+	float trianglePadding = 8; //distance from outer radius to triangle
+	float middleText = 11;
+	float innerArea;
+	float outerArea;
+	
+	/**
+	 * 
+	 * @param applet 
+	 * @param parent the button it resides in
+	 * @param inner the inner size of the button
+	 * @param outer the outer size of the button
+	 */
+	public MTCircularComponents(PApplet applet, MTCircularItem parent, float inner, float outer) {
+		super(0, 0, outer-inner, 0, applet);
+		
+		this.parent = parent;
+		innerArea = inner;
+		outerArea = outer;
+		this.setFillColor(TRANSPARENT);
+		this.setStrokeColor(TRANSPARENT);
+		removeAllGestureEventListeners();
+		createTextArea(applet);
+		createTriangle(applet);
+
+	}
+	
+	private void createTextArea(PApplet pa) {
+		textArea = new MTTextArea(pa,makeFont(pa));
+		textArea.setAnchor(PositionAnchor.LOWER_LEFT);
+		textArea.setPositionRelativeToParent(Vector3D.ZERO_VECTOR);
+		textArea.setFillColor(TRANSPARENT);
+		textArea.setStrokeColor(TRANSPARENT);
+		
+		///*
+		textArea.setEnabled(true);
+		gesturesPassThroughChild(textArea, pa);
+		this.addChild(textArea);
+	}
+
+	/**
+	 * Creates the triangle that shows if it has children or not, and if its selected or not
+	 * @param pa
+	 */
+	public void createTriangle(PApplet pa) {
+		triangle = new MTPolygon(new Vertex[]{ 
+				new Vertex(0f,0f), new Vertex(0, 10f), 
+				new Vertex(5f, 5f), new Vertex(0f,0f)
+				}, pa);
+		triangle.setPositionRelativeToParent(Vector3D.ZERO_VECTOR);
+		triangle.setFillColor(textColor);
+		triangle.setStrokeColor(textColor);
+		gesturesPassThroughChild(triangle, pa);
+		setTriangleVisibility();
+		this.addChild(triangle);
+	}
+	
+	/**
+	 * The issue I had was many components block passing gestures to parents. this is annoying.
+	 * @param child
+	 * @param pa
+	 */
+	private void gesturesPassThroughChild(MTComponent child, PApplet pa) {
+		child.removeAllGestureEventListeners();
+		child.setGestureAllowance(TapProcessor.class, true);
+		child.registerInputProcessor(new TapProcessor(pa));
+		child.addGestureListener(TapProcessor.class, new IGestureEventListener() {
+			@Override
+			public boolean processGestureEvent(MTGestureEvent ge) {
+				parent.processGestureEvent(ge);
+				return false;
+			}
+        });		
+	}
+	
+	/**
+	 * Called by the parent when it changes area, sets the area of us.
+	 * @param in
+	 * @param out
+	 */
+	public void setArea(float in, float out) {
+		//this.setSizeLocal(in, out);
+		textArea.setPositionRelativeToParent(new Vector3D(in+textPadding, middleText, 0));
+		triangle.setPositionRelativeToParent(new Vector3D(out-trianglePadding,0));
+		setTriangleVisibility();
+	}
+	
+
+	/**
+	 * Makes the font for the MTTextArea
+	 * @param mtApplication
+	 * @return
+	 */
+	public IFont makeFont(PApplet mtApplication) {
+		IFont gill = FontManager.getInstance().createFont(mtApplication, "arial.ttf", 
+				11, 	//Font size
+				textColor,  //Font fill color
+				textColor);	//Font outline color
+		return gill;
+	}
+	
+	
+	/**
+	 * Sets the text of the component to the given string.
+	 * @param text
+	 */
+	public void setText(String text) {
+		textArea.setText(text);
+	}
+	/**
+	 * returns the text of the component to the given string.
+	 * @param text
+	 */
+	public String getText() {
+		return textArea.getText();
+	}
+
+	/**
+	 * if true, the triangle is rotated 90 degrees counterclockwise, otherwise,
+	 * its rotated 90 degrees clockwise
+	 * @param rotated
+	 */
+	public void setTriangle(boolean rotated) {
+		setTriangleVisibility();
+		int direction;
+		if (rotated) direction = 1;
+		else	direction = -1;
+		triangle.rotateZ(triangle.getCenterPointRelativeToParent(), 90f*direction);
+	}
+	private void setTriangleVisibility() {
+		if (parent.getNumberOfChildren() != 0) triangle.setVisible(true);
+		else triangle.setVisible(false);
+	}
+
+
+}

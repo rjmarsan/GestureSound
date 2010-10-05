@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math
+END
+Plane.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Plane.java
+END
+Matrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Matrix.java
+END
+ToolsVBO.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ToolsVBO.java
+END
+FastMath.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/FastMath.java
+END
+ConvexQuickHull2D.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ConvexQuickHull2D.java
+END
+Vertex.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Vertex.java
+END
+ToolsBuffers.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ToolsBuffers.java
+END
+BezierVertex.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/BezierVertex.java
+END
+Quaternion.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Quaternion.java
+END
+ConvexityUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ConvexityUtil.java
+END
+ToolsIntersection.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ToolsIntersection.java
+END
+Tools3D.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Tools3D.java
+END
+ToolsLight.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/ToolsLight.java
+END
+Vector3D.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Vector3D.java
+END
+Ray.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/math/Ray.java
+END

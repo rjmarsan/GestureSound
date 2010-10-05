@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font
+END
+IFont.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/IFont.java
+END
+BitmapFontCharacter.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/BitmapFontCharacter.java
+END
+FontManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/FontManager.java
+END
+BitmapFont.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/BitmapFont.java
+END
+VectorFontCharacter.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/VectorFontCharacter.java
+END
+VectorFont.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/VectorFont.java
+END
+IFontCharacter.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/visibleComponents/font/IFontCharacter.java
+END

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds
+END
+IBoundingShape.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds/IBoundingShape.java
+END
+BoundsArbitraryPlanarPolygon.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds/BoundsArbitraryPlanarPolygon.java
+END
+OrientedBoundingBox.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds/OrientedBoundingBox.java
+END
+BoundsZPlaneRectangle.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds/BoundsZPlaneRectangle.java
+END
+BoundingSphere.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/components/bounds/BoundingSphere.java
+END

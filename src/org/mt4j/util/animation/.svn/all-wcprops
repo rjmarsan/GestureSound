@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation
+END
+Animation.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/Animation.java
+END
+AnimationEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/AnimationEvent.java
+END
+AnimationUpdateEvent.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/AnimationUpdateEvent.java
+END
+IAnimationManagerListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/IAnimationManagerListener.java
+END
+AnimationManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/AnimationManager.java
+END
+Iinterpolator.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/Iinterpolator.java
+END
+MultiPurposeInterpolator.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/MultiPurposeInterpolator.java
+END
+IAnimationListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/util/animation/IAnimationListener.java
+END

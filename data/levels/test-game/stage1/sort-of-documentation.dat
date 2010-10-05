@@ -1,0 +1,48 @@
+; identifiers are not case sensitive
+; size is not absolute.  Level gets stretched to fill screen
+
+Size: 160, 90
+Name: Stage 1
+
+; indented lines belong to previous unindented line
+Emitter: 80, 80				; x, y coordinates
+	Radius: 20				; radius [,minimum, maximum]
+	Color: white			; color (see ParticleColor.java for names)
+	Direction: 90, 0		; direction [, variance] (in degrees)
+	Rate: 30				; emit rate in particles/second
+	Velocity: 12			; particle velocity in pixels/second
+	
+Collector: 20, 40
+	Radius: 60
+	Color: white			; white = collects anything
+	Loop: 0					; number of the sound loop this collector controls
+	
+Colorer: 80, 30
+	Radius: 80
+	Mode: nomove, nosize	; comma separated flags: move, size, nomove, nosize
+	Color: red				;   by default, everything but collectors have "move, size"
+	
+Colorer: 120, 60
+	Radius: 40
+	Mode: nomove
+	Color: white
+	
+Collector: 120, 20
+	Radius: 90
+	Color: red
+	Maxfill: 5				; sets amount of fill needed to be full.  Default = 8
+	Loop: 1
+	
+Director: 100, 80
+	Radius: 60, 20, 100		; radius, min, max
+	Direction: 0
+	Accel: 100				; effect on particles in pixels/sec^2 (at center)
+							;  effect power changes as object is resized
+	
+Attractor: 60, 80
+	Radius: 70, 20, 120
+	Accel: 100
+
+
+; You can find more stuff by looking at an object's (or its superclass's) parseFileLine function
+	

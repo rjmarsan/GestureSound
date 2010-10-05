@@ -1,0 +1,20 @@
+Size: 160, 90
+Name: Debug
+
+Emitter: 20, 45
+	Radius: 15
+	Color: pink
+	Direction: 0		
+	Rate: 40
+	Velocity: 15
+	
+Colorer: 80, 45
+	Radius: 40
+	Mode: nomove, nosize
+	Color: purple
+	
+Collector: 140, 45
+	Radius: 70
+	Color: white
+	Loop: 0
+	MaxFill: 4

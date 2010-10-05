@@ -1,0 +1,15 @@
+Name: Hello World!
+Path: stage1
+Audio: {audio}/stage1
+
+Loop: loop1.wav	; loop 0
+Loop: loop2.wav	; loop 1
+Loop: loop3.wav	; ...
+Loop: loop4.wav
+Loop: loop5.wav
+
+
+;Level: debug.dat
+;Level: debug2.dat
+Level: level1.dat
+Level: level2.dat

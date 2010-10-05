@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction
+END
+DefaultDragAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultDragAction.java
+END
+DefaultPanAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultPanAction.java
+END
+DefaultRotateAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultRotateAction.java
+END
+DefaultArcballAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultArcballAction.java
+END
+DefaultButtonClickAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultButtonClickAction.java
+END
+DefaultLassoAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultLassoAction.java
+END
+DefaultSvgButtonClickAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultSvgButtonClickAction.java
+END
+DefaultZoomAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultZoomAction.java
+END
+InertiaDragAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/InertiaDragAction.java
+END
+DefaultScaleAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/DefaultScaleAction.java
+END
+TapAndHoldVisualizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/sp10/cs242/!svn/ver/4715/marsan1/Final/src/org/mt4j/input/gestureAction/TapAndHoldVisualizer.java
+END
