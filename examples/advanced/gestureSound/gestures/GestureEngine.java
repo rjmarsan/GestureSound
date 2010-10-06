@@ -4,9 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.sceneManagement.AbstractScene;
 
 import processing.core.PApplet;
+import Jama.Matrix;
+import advanced.gestureSound.gestures.filters.KalmanFilter;
 import advanced.gestureSound.gestures.qualities.Curvature;
 import advanced.gestureSound.gestures.qualities.Quality;
 import advanced.gestureSound.gestures.qualities.Velocity;
@@ -46,15 +52,18 @@ public class GestureEngine {
 	
 
 	public HashMap<String, ArrayList<SynthInfo>> map;
-	public Quality[] qualities;
+	public HashMap<String, Quality> qualities;
+	public HashMap<InputCursor, KalmanFilter> filters;
 	public static PApplet applet;
 	
-	public GestureEngine(PApplet app) {
+	public GestureEngine(PApplet app, AbstractScene scene) {
 		applet = app;
 		map = new HashMap<String, ArrayList<SynthInfo>>();
-		qualities =  new Quality[2];
-		qualities[0] = new Curvature(this) ;
-		qualities[1] = new Velocity(this) ;
+		qualities =  new HashMap<String, Quality>();
+		qualities.put(Curvature.name, new Curvature(this)) ;
+		qualities.put(Velocity.name, new Velocity(this)) ;
+		filters = new HashMap<InputCursor, KalmanFilter>();
+		setupCursorListener(scene);
 	}
 	
 	
@@ -69,11 +78,60 @@ public class GestureEngine {
 	}
 
 	
+	public void setupCursorListener(final AbstractScene scene) {
+        scene.getCanvas().addInputListener(new IMTInputEventListener() {
+        	@Override
+        	public boolean processInputEvent(MTInputEvent inEvt){
+        		if(inEvt instanceof AbstractCursorInputEvt){
+        			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
+        			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
+        				if (posEvt.getId() == AbstractCursorInputEvt.INPUT_ENDED) {
+        					System.out.println("Input Ended!");
+        					removeCursor(posEvt.getCursor());
+        				}
+        				else if (posEvt.getId() == AbstractCursorInputEvt.INPUT_DETECTED) {
+        					System.out.println("Input Detected!");
+        					addCursor(posEvt.getCursor());
+        				}
+        				else {
+        					InputCursor m = posEvt.getCursor();
+        					updateEngine(filter(m));
+        				}
+        			}
+        		}
+        		return false;
+        	}
+		});
+	}
+	
+	public void removeCursor(InputCursor in) {
+		filters.remove(in);
+	}
+	public void addCursor(InputCursor in) {
+		KalmanFilter f = KalmanFilter.buildKF2D(9, 1, 60); //magicparams, still don't know what they mean.
+		f.setX(new Matrix(new double[][]{{in.getCurrentEvtPosX()}, {in.getCurrentEvtPosY()}, {0.01}, {0.01} }));
+		f.predict();
+		filters.put(in, f);
+		
+	}
+	public InputCursor filter(InputCursor in) {
+		AbstractCursorInputEvt evt = in.getCurrentEvent();
+		KalmanFilter f = filters.get(in);
+		f.correct(new Matrix(new double[][]{{evt.getPosX(), evt.getPosY()}}).transpose());
+		f.predict();
+		evt.setPositionX((float) f.getX().get(0,0));  //I get it!
+		evt.setPositionY((float) f.getX().get(1,0));
+		return in;
+	}
 	
 	public void updateEngine(InputCursor in) {
-		for (Quality q : qualities) {
+		for (Quality q : qualities.values()) {
 			q.update(in);
 		}
+	}
+	
+	public float getCurrentValue(String name) {
+		return qualities.get(name).getCurrentValue();
 	}
 	
 	

@@ -6,11 +6,14 @@ import advanced.gestureSound.gestures.GestureEngine;
 
 public abstract class Quality {
 	GestureEngine engine;
-	String name;
+	public static String name="";
+	
 	
 	public Quality(GestureEngine engine) {
 		this.engine=engine;
 	}
 	
 	public abstract void update(InputCursor in);
+	
+	public abstract float getCurrentValue();
 }

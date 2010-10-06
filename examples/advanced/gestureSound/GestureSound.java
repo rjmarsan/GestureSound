@@ -30,7 +30,7 @@ public class GestureSound extends MTComponent {
 		super(applet);
 		// TODO Auto-generated constructor stub
 		this.applet = applet;
-		this.engine = new GestureEngine(applet);
+		this.engine = new GestureEngine(applet, scene);
 		
         scene.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
@@ -39,7 +39,6 @@ public class GestureSound extends MTComponent {
         			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
         			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
         				InputCursor m = posEvt.getCursor();
-        				engine.updateEngine(m);
         				in = m;
         			}
         		}
@@ -88,6 +87,8 @@ public class GestureSound extends MTComponent {
 				g.rect(evt.getPosX(), evt.getPosY(), 10, 10);
 			}
 		}
+		g.rect(30,30,30,engine.getCurrentValue("curvature")*100);
+		g.rect(70,30,30,engine.getCurrentValue("velocity")*2);
 	}
 
 }

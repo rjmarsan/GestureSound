@@ -114,6 +114,43 @@ protected Matrix X, X0;
  }
  
 
+ public static KalmanFilter buildKF2D(double dt, double processNoisePSD, double measurementNoiseVariance) {
+	 KalmanFilter KF = new KalmanFilter();
+	 
+	 //state vector
+	 KF.setX(new Matrix(new double[][]{{0, 0, 0, 0}}).transpose());
+	 
+	 //error covariance matrix
+	 KF.setP(Matrix.identity(4, 4).times(100));
+	 
+	 //transition matrix
+	 KF.setF(new Matrix(new double[][]{
+	   {1,  0,  0,  0},
+	   {0,  1,  0,  0},
+	   {dt, 0,  1,  0},
+	   {0, dt,  0,  1}}));
+
+	 double g = 60; //?
+	 //input gain matrix
+	 KF.setB(new Matrix(new double[][]{{0, 0, 0, g}}).transpose());
+	 
+	 //input vector
+	 KF.setU(new Matrix(new double[][]{{0}}));
+
+	 //process noise covariance matrix
+	 KF.setQ(Matrix.identity(4, 4).times(processNoisePSD));
+	 
+	 //measurement matrix
+	 KF.setH(new Matrix(new double[][]{{1, 0, 0, 0},
+			                           {0, 1, 0, 0}}));
+	 
+	 //measurement noise covariance matrix
+	 KF.setR(new Matrix(new double[][]{{0.2845,0.0045}, //magicvalsssss
+			                           {0.0045,0.0455}}).times(measurementNoiseVariance));
+	 
+	 return KF;
+ }
+ 
  public static KalmanFilter buildKF(double dt, double processNoisePSD, double measurementNoiseVariance) {
 	 KalmanFilter KF = new KalmanFilter();
 	 
@@ -150,4 +187,5 @@ protected Matrix X, X0;
 	 
 	 return KF;
  }
+
 }

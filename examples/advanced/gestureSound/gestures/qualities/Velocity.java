@@ -10,8 +10,11 @@ import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.filters.KalmanFilter;
 
 public class Velocity extends Quality {
+	public static String name="velocity";
 
 	KalmanFilter filter;
+	
+	float currentValue;
 	
 	public Velocity(GestureEngine engine) {
 		super(engine);
@@ -33,11 +36,17 @@ public class Velocity extends Quality {
 //		//System.out.println("2:"+filter.getX().get(2,0));
 //		val = (float) filter.getX().get(0,0);
 		System.out.println("Velocity: "+val);
-		engine. gestureQualityChange("velocity", val, in);
+		currentValue = val;
+		engine. gestureQualityChange(name, val, in);
 	}
 	private float findVelocity(InputCursor in) {
 		return in.getVelocityVector().length();
 
+	}
+
+	@Override
+	public float getCurrentValue() {
+		return currentValue;
 	}
 	
 }

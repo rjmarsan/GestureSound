@@ -10,8 +10,11 @@ import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.filters.KalmanFilter;
 
 public class Curvature extends Quality {
-
+	public static String name="curvature";
+	
 	KalmanFilter filter;
+	
+	float currentValue=0f;
 	
 	public Curvature(GestureEngine engine) {
 		super(engine);
@@ -25,15 +28,24 @@ public class Curvature extends Quality {
 		float val=0.0f;
 		
 		val = (float) (findCurvature(in)/(Math.PI));
+		
+		//filter, no. average? Yes.
+//		for (AbstractCursorInputEvt e : in.getEvents(200)) {
+//			
+//		}
+		float pastEvtCount = in.getEvents(100).size();
+		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
+		
 		//System.out.println("Curvature: "+val);
-		filter.correct(new Matrix(new double[][]{{val}}));
-		filter.predict();
+		//filter.correct(new Matrix(new double[][]{{val}}));
+		//filter.predict();
 		//System.out.println("0:"+filter.getX().get(0,0));
 		//System.out.println("1:"+filter.getX().get(1,0));
 		//System.out.println("2:"+filter.getX().get(2,0));
-		val = (float) filter.getX().get(0,0);
+		//val = (float) filter.getX().get(0,0);
 		System.out.println("Curvature: "+val);
-		engine. gestureQualityChange("curvature", val, in);
+		currentValue = val;
+		engine.gestureQualityChange(name, val, in);
 	}
 	private float findCurvature(InputCursor in) {
 		if (in.getEventCount() < 3)
@@ -70,6 +82,11 @@ public class Curvature extends Quality {
 	}
 	private float getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
 		return (float) Math.atan2(ev1.getPosX()-ev2.getPosX(), ev1.getPosY()-ev2.getPosY());
+	}
+
+	@Override
+	public float getCurrentValue() {
+		return currentValue;
 	}
 
 	
