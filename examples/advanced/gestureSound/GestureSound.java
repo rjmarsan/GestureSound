@@ -2,6 +2,8 @@ package advanced.gestureSound;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.input.IMTInputEventListener;
@@ -24,13 +26,19 @@ public class GestureSound extends MTComponent {
 	GestureEngine engine;
 	
 	SC sc;
-	InputCursor in;
+	List<InputCursor> ins;
+	
+	float lastRight1 = 0f;
+	float lastRight2 = 0f;
+	float lastLeft1 = 0f;
+	float lastLeft2 = 0f;
 
 	public GestureSound(PApplet applet, final AbstractScene scene) {
 		super(applet);
 		// TODO Auto-generated constructor stub
 		this.applet = applet;
 		this.engine = new GestureEngine(applet, scene);
+		this.ins = new ArrayList<InputCursor>();
 		
         scene.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
@@ -39,7 +47,12 @@ public class GestureSound extends MTComponent {
         			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
         			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
         				InputCursor m = posEvt.getCursor();
-        				in = m;
+        				if (posEvt.getId() == AbstractCursorInputEvt.INPUT_ENDED) {
+        					ins.remove(m);
+        				}
+        				else if (posEvt.getId() == AbstractCursorInputEvt.INPUT_DETECTED) {
+        					ins.add(m);
+        				}
         			}
         		}
         		return false;
@@ -82,13 +95,39 @@ public class GestureSound extends MTComponent {
 	
 	@Override
 	public void drawComponent(PGraphics g) {
-		if (in != null) {
+		g.stroke(100);
+		g.fill(150);
+		
+		for (InputCursor in : ins) {
+			if (in.getFirstEvent().getPosX() < this.applet.width/2) { //its on the left half of the screen
+				lastLeft1 = engine.getCurrentValue("curvature", in)*300;
+				lastLeft2 = engine.getCurrentValue("velocity", in)*2;
+				g.fill(100,100,0);
+			}
+			else {
+				lastRight1 = engine.getCurrentValue("curvature", in)*300;
+				lastRight2 = engine.getCurrentValue("velocity", in)*2;
+				g.fill(100,0,100);
+			}
+			
 			for (AbstractCursorInputEvt evt : in.getEvents()) {
 				g.rect(evt.getPosX(), evt.getPosY(), 10, 10);
 			}
 		}
-		g.rect(30,30,30,engine.getCurrentValue("curvature")*100);
-		g.rect(70,30,30,engine.getCurrentValue("velocity")*2);
+		g.stroke(100);
+		g.fill(150);
+
+		//top left bars
+		g.rect(30,50,30,lastLeft1);
+		g.rect(70,50,30,lastLeft2);
+
+		//top right bars
+		g.rect(this.applet.width-60,50,30,lastRight1);
+		g.rect(this.applet.width-100,50,30,lastRight2);
+		
+		//middle line
+		g.line(this.applet.width/2, 0, this.applet.width/2, this.applet.height);
+
 	}
 
 }

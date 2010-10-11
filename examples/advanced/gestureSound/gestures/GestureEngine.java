@@ -2,6 +2,7 @@ package advanced.gestureSound.gestures;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.mt4j.input.IMTInputEventListener;
@@ -52,16 +53,16 @@ public class GestureEngine {
 	
 
 	public HashMap<String, ArrayList<SynthInfo>> map;
-	public HashMap<String, Quality> qualities;
+	public HashMap<String, HashMap<InputCursor, Quality>> qualities;
 	public HashMap<InputCursor, KalmanFilter> filters;
 	public static PApplet applet;
 	
 	public GestureEngine(PApplet app, AbstractScene scene) {
 		applet = app;
 		map = new HashMap<String, ArrayList<SynthInfo>>();
-		qualities =  new HashMap<String, Quality>();
-		qualities.put(Curvature.name, new Curvature(this)) ;
-		qualities.put(Velocity.name, new Velocity(this)) ;
+		qualities =  new HashMap<String, HashMap<InputCursor,Quality>>();
+		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
+		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
 		filters = new HashMap<InputCursor, KalmanFilter>();
 		setupCursorListener(scene);
 	}
@@ -108,12 +109,19 @@ public class GestureEngine {
 		filters.remove(in);
 	}
 	public void addCursor(InputCursor in) {
+		addQualitiesForCursor(in);
 		KalmanFilter f = KalmanFilter.buildKF2D(9, 1, 60); //magicparams, still don't know what they mean.
 		f.setX(new Matrix(new double[][]{{in.getCurrentEvtPosX()}, {in.getCurrentEvtPosY()}, {0.01}, {0.01} }));
 		f.predict();
 		filters.put(in, f);
 		
 	}
+	
+	public void addQualitiesForCursor(InputCursor in) {
+		qualities.get(Curvature.name).put(in, new Curvature(this));
+		qualities.get(Velocity.name).put(in, new Velocity(this));
+	}
+	
 	public InputCursor filter(InputCursor in) {
 		AbstractCursorInputEvt evt = in.getCurrentEvent();
 		KalmanFilter f = filters.get(in);
@@ -125,14 +133,26 @@ public class GestureEngine {
 	}
 	
 	public void updateEngine(InputCursor in) {
-		for (Quality q : qualities.values()) {
-			q.update(in);
+		for (HashMap<InputCursor,Quality> cursorAndQualities : qualities.values()) {
+			if (cursorAndQualities.containsKey(in))
+				cursorAndQualities.get(in).update(in);
 		}
 	}
 	
 	public float getCurrentValue(String name) {
-		return qualities.get(name).getCurrentValue();
+		for (Quality qual : qualities.get(name).values()) {
+			return qual.getCurrentValue();
+		}
+		return Float.NaN;
 	}
+	
+	public float getCurrentValue(String name, InputCursor cursor) {
+		if (qualities.get(name).containsKey(cursor)) {
+			return qualities.get(name).get(cursor).getCurrentValue();
+		}
+		return Float.NaN;
+	}
+
 	
 	
 

@@ -16,6 +16,9 @@ public class Velocity extends Quality {
 	
 	float currentValue;
 	
+	public static Quality cursorDetected(GestureEngine engine) {
+		return new Velocity(engine);
+	}
 	public Velocity(GestureEngine engine) {
 		super(engine);
 		filter = KalmanFilter.buildKF(0.2, 5, 10);

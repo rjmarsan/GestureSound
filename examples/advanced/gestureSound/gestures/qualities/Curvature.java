@@ -16,6 +16,12 @@ public class Curvature extends Quality {
 	
 	float currentValue=0f;
 	
+	
+	public static Quality cursorDetected(GestureEngine engine) {
+		return new Curvature(engine);
+	}
+	
+	
 	public Curvature(GestureEngine engine) {
 		super(engine);
 		filter = KalmanFilter.buildKF(0.2, 5, 10);
