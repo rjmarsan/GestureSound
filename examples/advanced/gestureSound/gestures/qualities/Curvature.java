@@ -39,7 +39,7 @@ public class Curvature extends Quality {
 //		for (AbstractCursorInputEvt e : in.getEvents(200)) {
 //			
 //		}
-		float pastEvtCount = in.getEvents(100).size();
+		float pastEvtCount = in.getEvents(10).size();
 		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
 		
 		//System.out.println("Curvature: "+val);

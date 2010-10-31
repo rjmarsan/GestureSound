@@ -74,7 +74,17 @@ public class GestureSound extends MTComponent {
 			final Buffer b = Buffer.read(sc.server,f.getAbsolutePath());
 			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
 			engine.addToMap("curvature", synth1, "centerPos", 
-					new ParamMap() { public float map(float in) {return (float)((in*5+0.5)*b.getDuration()); }},
+					new ParamMap() { 
+						public float pos = 0f;
+						public float dur = (float) b.getDuration();
+						public float map(float in) {
+							if (dur != Float.NaN)
+								dur = (float) b.getDuration();
+							pos += in/20f;
+							pos = Math.min(Math.max(0, pos), dur);
+							System.out.println("Pos:"+pos+" In:"+in+" Dur:"+dur);
+							return pos;
+					}},
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
 			engine.addToMap("velocity", synth1, "trigRate", 
 					new ParamMap() { public float map(float in) {return in*4; }},

@@ -46,7 +46,7 @@ public class GestureEngine {
 			if (quad == 1 && y<0.5 && x < 0.5) return true;
 			if (quad == 2 && y<0.5 && x >= 0.5) return true;
 			if (quad == 3 && y>=0.5 && x >= 0.5) return true;
-			if (quad == 4 && y>=0.5 && x > 0.5) return true;
+			if (quad == 4 && y>=0.5 && x < 0.5) return true;
 			return false;
 		}
 	}
@@ -110,7 +110,7 @@ public class GestureEngine {
 	}
 	public void addCursor(InputCursor in) {
 		addQualitiesForCursor(in);
-		KalmanFilter f = KalmanFilter.buildKF2D(9, 1, 60); //magicparams, still don't know what they mean.
+		KalmanFilter f = KalmanFilter.buildKF2D(9, 1, 20); //magicparams, still don't know what they mean.
 		f.setX(new Matrix(new double[][]{{in.getCurrentEvtPosX()}, {in.getCurrentEvtPosY()}, {0.01}, {0.01} }));
 		f.predict();
 		filters.put(in, f);
