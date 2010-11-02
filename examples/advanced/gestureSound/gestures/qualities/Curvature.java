@@ -1,7 +1,12 @@
 package advanced.gestureSound.gestures.qualities;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import advanced.gestureSound.Geometry;
+
+
 
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
@@ -9,15 +14,14 @@ import org.mt4j.input.inputData.InputCursor;
 import Jama.Matrix;
 import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.filters.KalmanFilter;
-import flanagan.interpolation.CubicSpline;
 
 public class Curvature extends Quality {
 	public static String name="curvature";
 	
 	KalmanFilter filter;
 	
-	float currentValue=0f;
-	ArrayList<float[]> pastValues;
+	double currentValue=0f;
+	ArrayList<double[]> pastValues;
 
 	
 	public static Quality cursorDetected(GestureEngine engine) {
@@ -27,7 +31,7 @@ public class Curvature extends Quality {
 	
 	public Curvature(GestureEngine engine) {
 		super(engine);
-		pastValues = new ArrayList<float[]>();
+		pastValues = new ArrayList<double[]>();
 		filter = KalmanFilter.buildKF(0.2, 5, 10);
 		filter.setX(new Matrix(new double[][]{{0.01}, {0.01}, {0.01}}));
 		filter.predict();
@@ -35,45 +39,61 @@ public class Curvature extends Quality {
 
 	@Override
 	public void update(InputCursor in) {
-		float val=0.0f;
+		double val=0.0f;
 		
 		val = (float) (findCurvature(in)/(Math.PI));
 		
-		pastValues.add(new float[]{val});
+		pastValues.add(new double[]{val});
 		
 		//filter, no. average? Yes.
 //		float pastEvtCount = in.getEvents(10).size();
 //		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
 		
-		int size = in.getEvents(200).size();
-		//if (size > 2) { //this is the.... other method.
-		if (size < 0) { //nonsense, for now.
-			//size=3;
-			double[][] b = new double[size][2];
-			double[][] a = new double[size][2];
-			int pastValuesSize = pastValues.size();
-			System.out.println("Size of pastValuesL: "+pastValuesSize+" Size of b:"+size);
-			for (int x = 0; x < size; x++) {
-				b[x][0] = pastValues.get(pastValuesSize-x-1)[0];
-				b[x][1] = size-x;
-				a[x][0] = 1;
-				a[x][1] = x+1;
-			}
-	
-			
-			Matrix A = new Matrix(a);
-			Matrix B = new Matrix(b);
-			System.out.println("A: "+A+" B:"+B);
-			Matrix sol = A.solve(B);
-			System.out.println(sol);
-			for (double[] row : sol.getArray())
-				System.out.println("Row: ["+row[0]+","+row[1]+"]");
-			val = (float) sol.getArray()[0][0];
-		}
+//		int size = in.getEvents(200).size();
+//		//if (size > 2) { //this is the.... other method. using least squares.
+//		if (size < 0) { //nonsense, for now.
+//			//size=3;
+//			double[][] b = new double[size][2];
+//			double[][] a = new double[size][2];
+//			int pastValuesSize = pastValues.size();
+//			System.out.println("Size of pastValuesL: "+pastValuesSize+" Size of b:"+size);
+//			for (int x = 0; x < size; x++) {
+//				b[x][0] = pastValues.get(pastValuesSize-x-1)[0];
+//				b[x][1] = size-x;
+//				a[x][0] = 1;
+//				a[x][1] = x+1;
+//			}
+//	
+//			
+//			Matrix A = new Matrix(a);
+//			Matrix B = new Matrix(b);
+//			System.out.println("A: "+A+" B:"+B);
+//			Matrix sol = A.solve(B);
+//			System.out.println(sol);
+//			for (double[] row : sol.getArray())
+//				System.out.println("Row: ["+row[0]+","+row[1]+"]");
+//			val = (float) sol.getArray()[0][0];
+//		}
 //		if (size > 2) {
 //			
 //		}
-		
+		//this is the spline method
+		int n=15;
+		List<AbstractCursorInputEvt> past = in.getEvents();
+		int sizeofpast = in.getEvents().size();
+		if (sizeofpast > n) {
+			Point2D[] s = new Point2D[n+1];
+			for (int i=0;i<n+1;i++) {
+				AbstractCursorInputEvt p = past.get(sizeofpast-i-1);
+				s[i] = new Point2D.Double(p.getPosX(),p.getPosY());
+			}
+			Point2D p2,p1,p0;
+			p0 = s[0];
+			p1 = Geometry.evalBezier(s,0.1);
+			p2 = Geometry.evalBezier(s,0.2);
+			val = findCurvature(p0.getX(), p0.getY(), p1.getX(), p1.getY(), p2.getX(), p2.getY());
+
+		}
 		
 		//System.out.println("Curvature: "+val);
 		//filter.correct(new Matrix(new double[][]{{val}}));
@@ -84,9 +104,10 @@ public class Curvature extends Quality {
 		//val = (float) filter.getX().get(0,0);
 		System.out.println("Curvature: "+val);
 		currentValue = val;
-		engine.gestureQualityChange(name, val, in);
+		engine.gestureQualityChange(name, (float)val, in);
 	}
-	private float findCurvature(InputCursor in) {
+		
+	private double findCurvature(InputCursor in) {
 		if (in.getEventCount() < 3)
 			return 0.0f;
 		List<AbstractCursorInputEvt> events = in.getEvents();
@@ -97,21 +118,25 @@ public class Curvature extends Quality {
 			return 0;
 		if (prev2 == null)
 			return 0;
-		float angle1 = getAngle(posEvt, prev);
-		float angle2 = getAngle(prev, prev2);
+		return findCurvature(posEvt.getPosX(), posEvt.getPosY(), prev.getPosX(), prev.getPosY(), prev2.getPosX(), prev2.getPosY());
+	}
+	private double findCurvature(double x1, double y1, double x2, double y2, double x3, double y3) {
+
+		double angle1 = getAngle(x1,y1,x2,y2);
+		double angle2 = getAngle(x2,y2,x3,y3);
 		if (angle1 == 0.0f || angle2 == 0.0f) {
 			return 0.0f;
 		}		
-		float result = angle1-angle2;
+		double result = angle1-angle2;
 		if (result > Math.PI) {
 			//System.out.println("Result too big! taking other atan2: "+result+" New: "+(2*Math.PI-result));
 			
-			result = (float) (2*Math.PI-result);
+			result =  (2*Math.PI-result);
 		}
 		else if (result < -1*Math.PI) {
 			//System.out.println("Result too small! taking other atan2: "+result+" New: "+(2*Math.PI+result));
 
-			result = (float) (2*Math.PI+result);
+			result =  (2*Math.PI+result);
 		}
 		
 		//System.out.println("Curvature: "+result+" First Angle:"+angle1+" Second Angle: "+angle2);
@@ -119,13 +144,16 @@ public class Curvature extends Quality {
 		return result;
 
 	}
-	private float getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
-		return (float) Math.atan2(ev1.getPosX()-ev2.getPosX(), ev1.getPosY()-ev2.getPosY());
+	private double getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
+		return getAngle(ev1.getPosX(),ev1.getPosY(),ev2.getPosX(), ev2.getPosY());
+	}
+	private double getAngle(double x1, double y1, double x2, double y2) {
+		return Math.atan2(x1-x2, y1-y2);
 	}
 
 	@Override
 	public float getCurrentValue() {
-		return currentValue;
+		return (float)currentValue;
 	}
 
 	

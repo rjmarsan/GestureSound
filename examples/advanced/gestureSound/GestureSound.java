@@ -111,12 +111,12 @@ public class GestureSound extends MTComponent {
 		
 		for (InputCursor in : ins) {
 			if (in.getFirstEvent().getPosX() < this.applet.width/2) { //its on the left half of the screen
-				lastLeft1 = engine.getCurrentValue("curvature", in)*300;
+				lastLeft1 = engine.getCurrentValue("curvature", in)*30;
 				lastLeft2 = engine.getCurrentValue("velocity", in)*2;
 				g.fill(255,255,0);
 			}
 			else {
-				lastRight1 = engine.getCurrentValue("curvature", in)*300;
+				lastRight1 = engine.getCurrentValue("curvature", in)*30;
 				lastRight2 = engine.getCurrentValue("velocity", in)*2;
 				g.fill(255,0,255);
 			}
@@ -167,7 +167,7 @@ public class GestureSound extends MTComponent {
 			int n=7;
 
 			if (sizeofpast > n) {
-				g.fill(0,0,0);
+				g.fill(255,255,255);
 				for (int count = sizeofpast-1; count > n; count-=n) {
 					Point2D[] s = new Point2D[n+1];
 					for (int i=0;i<n+1;i++) 
@@ -181,6 +181,32 @@ public class GestureSound extends MTComponent {
 						g.line((float)p0.getX(), (float)p0.getY(), (float)p1.getX(), (float)p1.getY());
 						p0 = p1;
 					}
+				}
+				
+				List<AbstractCursorInputEvt> past = in.getEvents();
+				n=15;
+				sizeofpast = in.getEvents().size();
+				if (sizeofpast > n) {
+					Point2D[] s = new Point2D[n+1];
+					for (int i=0;i<n+1;i++) {
+						AbstractCursorInputEvt p = past.get(sizeofpast-i-1);
+						s[i] = new Point2D.Double(p.getPosX(),p.getPosY());
+					}
+					Point2D p2,p1,p0;
+					p0 = s[0];
+					p1 = Geometry.evalBezier(s,0.2);
+					p2 = Geometry.evalBezier(s,0.4);
+					System.out.println("P2: "+p2.getX()+","+p2.getY());
+					g.fill(0,0,255);
+					g.rect((float)p1.getX(), (float)p1.getY(), 5, 5);
+					g.fill(0,255,0);
+					g.rect((float)p2.getX(), (float)p2.getY(), 10, 10);
+					g.fill(255,0,0);
+					g.rect((float)p0.getX(), (float)p0.getY(), 5, 5);
+					g.fill(255,255,255);
+					g.rect((float)s[s.length-1].getX(), (float)s[s.length-1].getY(), 5, 5);
+
+
 				}
 			}
 

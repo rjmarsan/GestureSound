@@ -3,7 +3,7 @@ package advanced.gestureSound;
 import java.awt.geom.Point2D;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-class Geometry {
+public class Geometry {
 // A class for some geometric global functions
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
