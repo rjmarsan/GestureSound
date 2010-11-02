@@ -164,9 +164,9 @@ public class GestureSound extends MTComponent {
 //				}
 //			}
 			//try 3: code from http://www.faculty.idc.ac.il/arik/Java/ex2/index.html
-			int n=sizeofpast-2;
+			int n=7;
 
-			if (sizeofpast > 4) {
+			if (sizeofpast > n) {
 				g.fill(0,0,0);
 				for (int count = sizeofpast-1; count > n; count-=n) {
 					Point2D[] s = new Point2D[n+1];

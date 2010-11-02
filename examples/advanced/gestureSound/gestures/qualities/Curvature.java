@@ -46,7 +46,7 @@ public class Curvature extends Quality {
 //		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
 		
 		int size = in.getEvents(200).size();
-		//if (size > 2) {
+		//if (size > 2) { //this is the.... other method.
 		if (size < 0) { //nonsense, for now.
 			//size=3;
 			double[][] b = new double[size][2];
