@@ -1,5 +1,6 @@
 package advanced.gestureSound.gestures.qualities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
@@ -8,6 +9,7 @@ import org.mt4j.input.inputData.InputCursor;
 import Jama.Matrix;
 import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.filters.KalmanFilter;
+import flanagan.interpolation.CubicSpline;
 
 public class Curvature extends Quality {
 	public static String name="curvature";
@@ -15,7 +17,8 @@ public class Curvature extends Quality {
 	KalmanFilter filter;
 	
 	float currentValue=0f;
-	
+	ArrayList<float[]> pastValues;
+
 	
 	public static Quality cursorDetected(GestureEngine engine) {
 		return new Curvature(engine);
@@ -24,6 +27,7 @@ public class Curvature extends Quality {
 	
 	public Curvature(GestureEngine engine) {
 		super(engine);
+		pastValues = new ArrayList<float[]>();
 		filter = KalmanFilter.buildKF(0.2, 5, 10);
 		filter.setX(new Matrix(new double[][]{{0.01}, {0.01}, {0.01}}));
 		filter.predict();
@@ -35,12 +39,41 @@ public class Curvature extends Quality {
 		
 		val = (float) (findCurvature(in)/(Math.PI));
 		
+		pastValues.add(new float[]{val});
+		
 		//filter, no. average? Yes.
-//		for (AbstractCursorInputEvt e : in.getEvents(200)) {
+//		float pastEvtCount = in.getEvents(10).size();
+//		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
+		
+		int size = in.getEvents(200).size();
+		//if (size > 2) {
+		if (size < 0) { //nonsense, for now.
+			//size=3;
+			double[][] b = new double[size][2];
+			double[][] a = new double[size][2];
+			int pastValuesSize = pastValues.size();
+			System.out.println("Size of pastValuesL: "+pastValuesSize+" Size of b:"+size);
+			for (int x = 0; x < size; x++) {
+				b[x][0] = pastValues.get(pastValuesSize-x-1)[0];
+				b[x][1] = size-x;
+				a[x][0] = 1;
+				a[x][1] = x+1;
+			}
+	
+			
+			Matrix A = new Matrix(a);
+			Matrix B = new Matrix(b);
+			System.out.println("A: "+A+" B:"+B);
+			Matrix sol = A.solve(B);
+			System.out.println(sol);
+			for (double[] row : sol.getArray())
+				System.out.println("Row: ["+row[0]+","+row[1]+"]");
+			val = (float) sol.getArray()[0][0];
+		}
+//		if (size > 2) {
 //			
 //		}
-		float pastEvtCount = in.getEvents(10).size();
-		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
+		
 		
 		//System.out.println("Curvature: "+val);
 		//filter.correct(new Matrix(new double[][]{{val}}));

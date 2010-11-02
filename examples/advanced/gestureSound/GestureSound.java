@@ -1,5 +1,6 @@
 package advanced.gestureSound;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,17 +113,77 @@ public class GestureSound extends MTComponent {
 			if (in.getFirstEvent().getPosX() < this.applet.width/2) { //its on the left half of the screen
 				lastLeft1 = engine.getCurrentValue("curvature", in)*300;
 				lastLeft2 = engine.getCurrentValue("velocity", in)*2;
-				g.fill(100,100,0);
+				g.fill(255,255,0);
 			}
 			else {
 				lastRight1 = engine.getCurrentValue("curvature", in)*300;
 				lastRight2 = engine.getCurrentValue("velocity", in)*2;
-				g.fill(100,0,100);
+				g.fill(255,0,255);
 			}
 			
+			
+			int sizeofpast = in.getEventCount();
+			double[] x = new double[sizeofpast];
+			double[] y = new double[sizeofpast];
+			int c = 0;
 			for (AbstractCursorInputEvt evt : in.getEvents()) {
-				g.rect(evt.getPosX(), evt.getPosY(), 10, 10);
+				//g.rect(evt.getPosX(), evt.getPosY(), 4, 4);
+				x[c] = evt.getPosX();
+				y[c] = evt.getPosY();
+				c += 1;
+				
+				
 			}
+			//try 1: cubic spline library
+//			if (sizeofpast > 2) {
+//				g.fill(0,0,0);
+//				CubicSpline s = new CubicSpline(x,y);
+//				s.setDerivLimits(3,5);
+//				Arrays.sort(x);
+//				for (double xx = x[0]; xx < x[x.length-1]; xx++) {
+//					g.rect((float)xx, (float)s.interpolate(xx), 1, 1);
+//				}
+//			}
+			//try 2: built-in spline library
+//			if (sizeofpast > 2) {
+//				g.fill(0,0,0);
+//				
+//				for (int count = sizeofpast-1; count >= 3; count-=3) {
+//					CubicCurve2D.Double s = new CubicCurve2D.Double(x[count],y[count],x[count-1],y[count-1],x[count-2],y[count-2],x[count-3],y[count-3]);
+//					//
+//					PathIterator pit = s.getPathIterator(null,0.1);
+//					double[] coords = new double[6];
+//			        while(!pit.isDone()) {
+//			            int type = pit.currentSegment(coords);
+//			           
+//						g.rect((float)coords[0], (float)coords[1], 1, 1);
+//			            pit.next();
+//
+//			        }
+//
+//				}
+//			}
+			//try 3: code from http://www.faculty.idc.ac.il/arik/Java/ex2/index.html
+			int n=sizeofpast-2;
+
+			if (sizeofpast > 4) {
+				g.fill(0,0,0);
+				for (int count = sizeofpast-1; count > n; count-=n) {
+					Point2D[] s = new Point2D[n+1];
+					for (int i=0;i<n+1;i++) 
+						s[i] = new Point2D.Double(x[count-i],y[count-i]);
+					Point2D p1,p0;
+					p0 = s[0];
+					for (int i = 1 ; i <= 50 ; i++) {
+						double t = (double)i/50.0;
+						//p1 = Geometry.evalBezierRec(ptArray,t,np);
+						p1 = Geometry.evalBezier(s,t);
+						g.line((float)p0.getX(), (float)p0.getY(), (float)p1.getX(), (float)p1.getY());
+						p0 = p1;
+					}
+				}
+			}
+
 		}
 		g.stroke(100);
 		g.fill(150);
