@@ -77,7 +77,7 @@ public class Curvature extends Quality {
 //		if (size > 2) {
 //			
 //		}
-		//this is the spline method
+		//this is the spline method http://www.faculty.idc.ac.il/arik/Java/ex2/index.html
 		int n=15;
 		List<AbstractCursorInputEvt> past = in.getEvents();
 		int sizeofpast = in.getEvents().size();
