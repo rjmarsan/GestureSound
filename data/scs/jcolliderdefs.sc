@@ -20,7 +20,9 @@ Out.ar([0,1], granny + LeakDC.ar(revSignal));
 SynthDef(\grannyyy, {arg trigRate, rate=1, centerPos, dur=0.05, pan=0.2, amp = 0.4, buffer=0;
 Out.ar([0,1], TGrains.ar(2,Impulse.ar(trigRate),buffer,rate,centerPos,dur,pan,amp,2));
 }).store;
-
+SynthDef(\grannyyyrelated, {arg trigRate, rate=1, centerPos, dur=0.05, pan=0.2, amp = 0.4, buffer=0;
+Out.ar([0,1], TGrains.ar(2,Impulse.ar(1/(trigRate*dur)),buffer,rate,centerPos,dur,pan,amp,2));
+}).store;
 
 
 b = Buffer.read(s, "/Users/rj/Documents/workspace/MT4j/data/sounds/amiu.aif");
