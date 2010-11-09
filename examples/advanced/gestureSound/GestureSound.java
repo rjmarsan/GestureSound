@@ -18,6 +18,7 @@ import processing.core.PGraphics;
 import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.GestureEngine.ParamMap;
 import advanced.gestureSound.gestures.GestureEngine.Zone;
+import advanced.gestureSound.input.InputDelegate;
 import de.sciss.jcollider.Buffer;
 import de.sciss.jcollider.Synth;
 
@@ -25,6 +26,7 @@ public class GestureSound extends MTComponent {
 
 	PApplet applet;
 	GestureEngine engine;
+	InputDelegate inDelegate;
 	
 	SC sc;
 	List<InputCursor> ins;
@@ -39,23 +41,22 @@ public class GestureSound extends MTComponent {
 		super(applet);
 		// TODO Auto-generated constructor stub
 		this.applet = applet;
-		this.engine = new GestureEngine(applet, scene);
+		this.inDelegate = new InputDelegate(applet, scene);
+		this.engine = new GestureEngine(applet, inDelegate);
 		this.ins = new ArrayList<InputCursor>();
-		
-        scene.getCanvas().addInputListener(new IMTInputEventListener() {
+        inDelegate.addInputListener(new IMTInputEventListener() {
+        	
         	//@Override
         	public boolean processInputEvent(MTInputEvent inEvt){
         		if(inEvt instanceof AbstractCursorInputEvt){
         			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
-        			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
-        				final InputCursor m = posEvt.getCursor();
-        				if (posEvt.getId() == AbstractCursorInputEvt.INPUT_ENDED) {
-        					ins.remove(m);
-        				}
-        				else if (posEvt.getId() == AbstractCursorInputEvt.INPUT_DETECTED) {
-        					ins.add(m);
-        				}
-        			}
+    				final InputCursor m = posEvt.getCursor();
+    				if (posEvt.getId() == AbstractCursorInputEvt.INPUT_ENDED) {
+    					ins.remove(m);
+    				}
+    				else if (posEvt.getId() == AbstractCursorInputEvt.INPUT_DETECTED) {
+    					ins.add(m);
+    				}
         		}
         		return false;
         	}
@@ -77,13 +78,13 @@ public class GestureSound extends MTComponent {
 				dur = (float) b.getDuration();
 			pos += in/30f;
 			pos = Math.min(Math.max(0, pos), dur);
-			System.out.println("Pos:"+pos+" In:"+in+" Dur:"+dur);
+			//System.out.println("Pos:"+pos+" In:"+in+" Dur:"+dur);
 			return pos;
 	}}
 	public static class TrigRateMap implements ParamMap { 
 		public float map(float in) {
 			float val = (1/DurMap.durVal*(in+0.5f));
-			System.out.println("durVal:"+DurMap.durVal+"velocity:" + in+" TrigRate:"+val);
+			//System.out.println("durVal:"+DurMap.durVal+"velocity:" + in+" TrigRate:"+val);
 			if (b.getDuration() != Float.NaN) {
 				//val = Math.min(Math.max(0f, val), (float)b.getDuration());
 			}
@@ -225,7 +226,7 @@ public class GestureSound extends MTComponent {
 					p0 = s[0];
 					p1 = Geometry.evalBezier(s,0.2);
 					p2 = Geometry.evalBezier(s,0.4);
-					System.out.println("P2: "+p2.getX()+","+p2.getY());
+					//System.out.println("P2: "+p2.getX()+","+p2.getY());
 					g.fill(0,0,255);
 					g.rect((float)p1.getX(), (float)p1.getY(), 5, 5);
 					g.fill(0,255,0);
@@ -253,7 +254,9 @@ public class GestureSound extends MTComponent {
 		
 		//middle line
 		g.line(this.applet.width/2, 0, this.applet.width/2, this.applet.height);
-
+		inDelegate.tick();
 	}
+	
+	
 
 }

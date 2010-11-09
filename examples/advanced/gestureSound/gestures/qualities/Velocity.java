@@ -38,7 +38,7 @@ public class Velocity extends Quality {
 //		//System.out.println("1:"+filter.getX().get(1,0));
 //		//System.out.println("2:"+filter.getX().get(2,0));
 //		val = (float) filter.getX().get(0,0);
-		System.out.println("Velocity: "+val);
+//		System.out.println("Velocity: "+val);
 		currentValue = val;
 		engine. gestureQualityChange(name, val, in);
 	}

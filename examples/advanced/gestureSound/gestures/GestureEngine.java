@@ -2,14 +2,12 @@ package advanced.gestureSound.gestures;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTInputEvent;
-import org.mt4j.sceneManagement.AbstractScene;
 
 import processing.core.PApplet;
 import Jama.Matrix;
@@ -17,6 +15,7 @@ import advanced.gestureSound.gestures.filters.KalmanFilter;
 import advanced.gestureSound.gestures.qualities.Curvature;
 import advanced.gestureSound.gestures.qualities.Quality;
 import advanced.gestureSound.gestures.qualities.Velocity;
+import advanced.gestureSound.input.InputDelegate;
 import de.sciss.jcollider.Synth;
 
 public class GestureEngine {
@@ -57,14 +56,14 @@ public class GestureEngine {
 	public HashMap<InputCursor, KalmanFilter> filters;
 	public static PApplet applet;
 	
-	public GestureEngine(PApplet app, AbstractScene scene) {
+	public GestureEngine(PApplet app, InputDelegate in) {
 		applet = app;
 		map = new HashMap<String, ArrayList<SynthInfo>>();
 		qualities =  new HashMap<String, HashMap<InputCursor,Quality>>();
 		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
 		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
 		filters = new HashMap<InputCursor, KalmanFilter>();
-		setupCursorListener(scene);
+		setupCursorListener(in);
 	}
 	
 	
@@ -79,13 +78,13 @@ public class GestureEngine {
 	}
 
 	
-	public void setupCursorListener(final AbstractScene scene) {
-        scene.getCanvas().addInputListener(new IMTInputEventListener() {
+	public void setupCursorListener(final InputDelegate in) {
+        in.addInputListener(new IMTInputEventListener() {
         	@Override
         	public boolean processInputEvent(MTInputEvent inEvt){
         		if(inEvt instanceof AbstractCursorInputEvt){
         			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
-        			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(scene.getCanvas())){
+        			if (posEvt.hasTarget()){
         				if (posEvt.getId() == AbstractCursorInputEvt.INPUT_ENDED) {
         					System.out.println("Input Ended!");
         					removeCursor(posEvt.getCursor());
@@ -124,7 +123,9 @@ public class GestureEngine {
 	
 	public InputCursor filter(InputCursor in) {
 		AbstractCursorInputEvt evt = in.getCurrentEvent();
+		if (evt == null) return in;
 		KalmanFilter f = filters.get(in);
+		if (f == null) return in;
 		f.correct(new Matrix(new double[][]{{evt.getPosX(), evt.getPosY()}}).transpose());
 		f.predict();
 		evt.setPositionX((float) f.getX().get(0,0));  //I get it!

@@ -102,7 +102,7 @@ public class Curvature extends Quality {
 		//System.out.println("1:"+filter.getX().get(1,0));
 		//System.out.println("2:"+filter.getX().get(2,0));
 		//val = (float) filter.getX().get(0,0);
-		System.out.println("Curvature: "+val);
+		//System.out.println("Curvature: "+val);
 		currentValue = val;
 		engine.gestureQualityChange(name, (float)val, in);
 	}
@@ -120,7 +120,7 @@ public class Curvature extends Quality {
 			return 0;
 		return findCurvature(posEvt.getPosX(), posEvt.getPosY(), prev.getPosX(), prev.getPosY(), prev2.getPosX(), prev2.getPosY());
 	}
-	private double findCurvature(double x1, double y1, double x2, double y2, double x3, double y3) {
+	public static double findCurvature(double x1, double y1, double x2, double y2, double x3, double y3) {
 
 		double angle1 = getAngle(x1,y1,x2,y2);
 		double angle2 = getAngle(x2,y2,x3,y3);
@@ -144,10 +144,10 @@ public class Curvature extends Quality {
 		return result;
 
 	}
-	private double getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
+	public static double getAngle(AbstractCursorInputEvt ev1, AbstractCursorInputEvt ev2) {
 		return getAngle(ev1.getPosX(),ev1.getPosY(),ev2.getPosX(), ev2.getPosY());
 	}
-	private double getAngle(double x1, double y1, double x2, double y2) {
+	public static double getAngle(double x1, double y1, double x2, double y2) {
 		return Math.atan2(x1-x2, y1-y2);
 	}
 
