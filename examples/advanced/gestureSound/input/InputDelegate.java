@@ -16,15 +16,17 @@ import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.math.Vector3D;
 
 import advanced.gestureSound.Geometry;
+import advanced.gestureSound.U;
 import advanced.gestureSound.gestures.qualities.Curvature;
 
 import processing.core.PApplet;
 
 public class InputDelegate extends MTComponent {
 	List<FadeOut> tickings;
-
+	final PApplet p;
 	public InputDelegate(PApplet pApplet, final AbstractScene scene) {
 		super(pApplet);
+		p = pApplet;
 		tickings = new ArrayList<FadeOut>();
 		// TODO Auto-generated constructor stub
 		
@@ -70,21 +72,29 @@ public class InputDelegate extends MTComponent {
 			System.out.println("Adding point: "+x+","+y);
 		}
 		Point2D p0,p1,p2;
-		p0 = s[0];
-		p1 = Geometry.evalBezier(s,0.2);
-		p2 = Geometry.evalBezier(s,0.4);	
-		final float curvature = (float) Curvature.findCurvature(p0.getX(),p0.getY(),p1.getX(),p1.getY(),p2.getX(),p2.getY());
-		/** end yeah **/
+		float curve = 0f;
+		float damp = 0f;
+		for (int i=0;i<10;i++) {
+			p0 = Geometry.evalBezier(s,0.0+i/20);
+			p1 = Geometry.evalBezier(s,0.2+i/20);
+			p2 = Geometry.evalBezier(s,0.4+i/20);
+			damp += m.getVelocityVector(i*100).length();
+			curve +=  (float) Curvature.findCurvature(p0.getX(),p0.getY(),p1.getX(),p1.getY(),p2.getX(),p2.getY());
+		}
+		/** that was way more complicated than it needed to be. oh well. **/
+		
+		final float curvature = curve/20;
+		final float dampening = damp/(30+damp);
 		System.out.println("Curavture: "+curvature);
-		
-		
+
 		
 		tickings.add(new FadeOut() {
 			int i=0;
-			float currentX = posEvt.getPosX();
-			float currentY = posEvt.getPosY();
-			float originalVecLength = m.getVelocityVector().length();
+			float currentX = (float) posEvt.getPosX();
+			float currentY = (float) posEvt.getPosY();
 			Vector3D currentVec = m.getVelocityVector();
+			
+			float ourCurvature = curvature;
 
 			public void tick() {
 				synchronized(m.getEvents()) {
@@ -108,26 +118,38 @@ public class InputDelegate extends MTComponent {
 			}
 			public AbstractCursorInputEvt predictNext(InputCursor m) {
 				AbstractCursorInputEvt evt = m.getPreviousEvent();
+
+				currentVec.rotateZ(-ourCurvature);
 				Vector3D out = currentVec.getAdded(new Vector3D(currentX, currentY));
-				currentVec = currentVec.getScaled(0.9f);
+				currentVec = currentVec.getScaled(dampening);
+					
 				currentX = out.x;
 				currentY = out.y;
-				Point2D pt = Geometry.evalBezier(s,     0.3f/(0.3f+currentVec.length())    );
-//				currentX = (float) ((float) (cX-pt.getX())+cX);
-//				currentY = (float) ((float) (cY-pt.getY())+cY);
-//				if (curvature > 0) 
-					float pX = (float) pt.getX();
-					float pY = (float) pt.getY();
-					currentX = pX;
-					//currentX = (float) (pX*Math.cos(curvature)+pY*Math.sin(curvature));
-					//currentX = (float) (cX-currentX);
-//				else
-					currentY = pY;
-					//currentY = (float) (pX*Math.sin(curvature)+pY*Math.cos(curvature));
-					currentX += cX;
-					currentY += cY;
-
-					//currentY = (float) (cY-currentY);
+				//if we go out of the bounds, bounce back like you'd expect.
+				if (currentX < 0 || currentX > p.width || currentY < 0 || currentY > p.height) {
+					if (currentX < 0) {
+						System.out.println("Bounce LR! "+currentVec.angleBetween(Vector3D.Y_AXIS));
+						currentVec.rotateAroundAxisLocal(new Vector3D(0,-1), 2*currentVec.angleBetween(new Vector3D(0,-1)));
+					}
+					else if (currentX > p.width) {
+						System.out.println("Bounce LR! "+currentVec.angleBetween(Vector3D.Y_AXIS));
+						currentVec.rotateAroundAxisLocal(Vector3D.Y_AXIS, 2*currentVec.angleBetween(Vector3D.Y_AXIS));
+					}
+					else if (currentY < 0) {
+						System.out.println("Bounce TB! "+currentVec.angleBetween(Vector3D.X_AXIS));
+						currentVec.rotateAroundAxisLocal(Vector3D.X_AXIS, 2*currentVec.angleBetween(Vector3D.X_AXIS));
+					}
+					else {
+						System.out.println("Bounce TB! "+currentVec.angleBetween(Vector3D.X_AXIS));
+						currentVec.rotateZ(-2*currentVec.angleBetween(Vector3D.X_AXIS));
+					}
+					
+					currentVec = currentVec.getScaled(0.7f);//dampen bounces
+						
+					currentX = U.minmax(currentX, 0, p.width);
+					currentY = U.minmax(currentY, 0, p.height);
+				}
+				
 				return new MTFingerInputEvt((AbstractInputSource) evt
 						.getSource(), evt.getTargetComponent(), currentX
 						, currentY , evt.getId() + 2, m);
