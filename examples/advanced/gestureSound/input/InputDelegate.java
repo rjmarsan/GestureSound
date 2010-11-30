@@ -47,6 +47,9 @@ public class InputDelegate extends MTComponent {
         				
         			}
         		}
+        		else {
+        			fireInputEvent(inEvt);
+        		}
         		return false;
         	}
 		});
@@ -69,7 +72,7 @@ public class InputDelegate extends MTComponent {
 			double x = cX-p.getPosX();//(cX-p.getPosX())+cX;//onward into the future!
 			double y = cY-p.getPosY();//(cY-p.getPosY())+cY;//onward into the future!
 			s[i] = new Point2D.Double(x,y);
-			System.out.println("Adding point: "+x+","+y);
+			//System.out.println("Adding point: "+x+","+y);
 		}
 		Point2D p0,p1,p2;
 		float curve = 0f;
@@ -85,7 +88,7 @@ public class InputDelegate extends MTComponent {
 		
 		final float curvature = curve/20;
 		final float dampening = damp/(30+damp);
-		System.out.println("Curavture: "+curvature);
+		//System.out.println("Curavture: "+curvature);
 
 		
 		tickings.add(new FadeOut() {

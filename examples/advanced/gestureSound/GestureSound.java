@@ -58,6 +58,9 @@ public class GestureSound extends MTComponent {
     					ins.add(m);
     				}
         		}
+        		else {
+        			System.out.println("Input event! Class:"+inEvt.getClass().toString());
+        		}
         		return false;
         	}
 		});
@@ -70,20 +73,25 @@ public class GestureSound extends MTComponent {
 	}
 	
 	
+	
+	
 	public static class CenterPosMap implements ParamMap { 
 		public float pos = 0f;
 		public float dur = Float.NaN;
+		public float sensitivity = 0.05f;
 		public float map(float in) {
 			//if (dur == Float.NaN)
 				dur = (float) b.getDuration();
-			pos += in/30f;
-			pos = Math.min(Math.max(0, pos), dur);
+			pos += in*sensitivity;
+			//pos = Math.min(Math.max(0, pos), dur);
+			pos = pos % dur;
 			//System.out.println("Pos:"+pos+" In:"+in+" Dur:"+dur);
 			return pos;
 	}}
-	public static class TrigRateMap implements ParamMap { 
+	public static class TrigRateMap implements ParamMap {
+		public static float sensitivity=1.1f;
 		public float map(float in) {
-			float val = (1/DurMap.durVal*(in+0.5f));
+			float val = (1/DurMap.durVal*(in*1.1f+0.5f));
 			//System.out.println("durVal:"+DurMap.durVal+"velocity:" + in+" TrigRate:"+val);
 			if (b.getDuration() != Float.NaN) {
 				//val = Math.min(Math.max(0f, val), (float)b.getDuration());
@@ -93,18 +101,25 @@ public class GestureSound extends MTComponent {
 		}
 	}
 	public static class DurMap implements ParamMap {
-		public static float durVal = 0.1f;
+		public static float durVal = 0.2f;
+		public static float sensitivity=2.7f;
+		public static float middle = 0.2f;
 		
 		public float map(float in) {
-				durVal = (float)((in*b.getDuration()/2f)+b.getDuration()/2f);
+				float pos = in*sensitivity;
+				//durVal = ((float)b.getDuration());
+				durVal = (float) Math.pow(sensitivity, pos)*middle;
+				//durVal = (float)((in*sensitivity*b.getDuration()/2f)+/2f);
 				if (b.getDuration() != Float.NaN) {
-					durVal = Math.min(Math.max(0f, durVal), (float)b.getDuration());
+					durVal = Math.min(Math.max(0.01f, durVal), (float)b.getDuration());
 				}
+				System.out.println("durVal:"+durVal);
 				return durVal; 
 			}
 		}
 	public static class VelocityMap implements  ParamMap { 
-		public float map(float in) {return in/10; }
+		public float sensitivity = 0.08f;
+		public float map(float in) {return in*sensitivity; }
 	}
 
 	
