@@ -100,6 +100,35 @@ public class GestureSound extends MTComponent {
 		    //return in*4;	
 		}
 	}
+	public static class TrigRateMap2 implements ParamMap {
+		public static float sensitivity=1.1f;
+		public DurMap2 durMap = new DurMap2();
+		public float map(float in) {
+			float durVal = durMap.map(in);
+			float val = (1/durVal*(in*1.1f+0.5f));
+			//System.out.println("durVal:"+DurMap.durVal+"velocity:" + in+" TrigRate:"+val);
+			if (b.getDuration() != Float.NaN) {
+				//val = Math.min(Math.max(0f, val), (float)b.getDuration());
+			}
+			return val;
+		    //return in*4;	
+		}
+	}
+	public static class DurMap2 implements ParamMap {
+		public static float durVal = 0.2f;
+		public static float sensitivity=0.2f;
+		
+		public float map(float in) {
+				//durVal = (float)((in*sensitivity*b.getDuration()/2f)+2f);
+				durVal = 0.00f + (float)((1/(in*sensitivity)));
+				if (b.getDuration() != Float.NaN) {
+					durVal = Math.min(Math.max(0.01f, durVal), (float)b.getDuration());
+				}
+				System.out.println("durVal:"+durVal);
+				return durVal; 
+		}
+	}
+
 	public static class DurMap implements ParamMap {
 		public static float durVal = 0.2f;
 		public static float sensitivity=2.7f;
@@ -118,37 +147,41 @@ public class GestureSound extends MTComponent {
 		}
 	}
 	public static class RateMap implements  ParamMap { 
-		public float sensitivity = 1.0f;
+		public float sensitivity = 0.02f;
 		public static float rateVal = 1.0f;
 		public float map(float in) {
-			rateVal = 1+in*sensitivity;
+			//normal mode, not in octaveness yet. (linear, not logrithmic)
+			rateVal = in*in*in*in*in*sensitivity;
+			//octaveness
+			rateVal = (float)Math.exp(in);
+			rateVal = rateVal + 1; //add in offset.
 			System.out.println("rate:"+rateVal);
 			return rateVal; }
 	}
 
 	public static class VelocityMap implements  ParamMap { 
-		public float sensitivity = 0.08f;
-		public float map(float in) {return in*sensitivity; }
+		public float sensitivity = 0.16f;
+		public float map(float in) {return (float) Math.sqrt(in*sensitivity); }
 	}
 
 	
 	void setupGestures() {
 		try {
-			File f = new File("data/sounds/amiu.aif");
+			File f = new File("data/sounds/MurrayPerahia1.aif");
 			System.out.println("Loading sample at: "+f.getAbsolutePath());
 			b = Buffer.read(sc.server,f.getAbsolutePath());
 			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
 			engine.addToMap("curvature", synth1, "centerPos", 
 					new CenterPosMap(),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
+			engine.addToMap("velocity", synth1, "amp", 
+					new VelocityMap(), 
+					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
 			engine.addToMap("velocity", synth1, "trigRate", 
 					new TrigRateMap(),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
 			engine.addToMap("curvature", synth1, "rate", 
 					new RateMap(),
-					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
-			engine.addToMap("velocity", synth1, "amp", 
-					new VelocityMap(), 
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
 
 		} catch (IOException e) {
