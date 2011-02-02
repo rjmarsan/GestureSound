@@ -3,6 +3,8 @@ package advanced.gestureSound;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,9 @@ import advanced.gestureSound.gestures.GestureEngine.Zone;
 import advanced.gestureSound.input.InputDelegate;
 import de.sciss.jcollider.Buffer;
 import de.sciss.jcollider.Synth;
+import de.sciss.net.OSCClient;
+import de.sciss.net.OSCMessage;
+import de.sciss.net.OSCServer;
 
 public class GestureSound extends MTComponent {
 
@@ -73,7 +78,21 @@ public class GestureSound extends MTComponent {
 	}
 	
 	
-	
+	public static class OSCMap implements ParamMap {
+		public static OSCManager man = new OSCManager();
+		
+		public final String name;
+		public OSCMap(String name) {
+			this.name = name;
+			man.addParam(name);
+		}
+		
+		public float map(float in) {
+			man.updateParam(name, in);
+			man.send();
+			return in;
+		}
+	}
 	
 	public static class CenterPosMap implements ParamMap { 
 		public float pos = 0f;
@@ -139,10 +158,12 @@ public class GestureSound extends MTComponent {
 			b = Buffer.read(sc.server,f.getAbsolutePath());
 			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
 			engine.addToMap("curvature", synth1, "centerPos", 
-					new CenterPosMap(),
+					//new CenterPosMap(),
+					new OSCMap("curvature"),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
 			engine.addToMap("velocity", synth1, "trigRate", 
-					new TrigRateMap(),
+					//new TrigRateMap(),
+					new OSCMap("velocity"),
 					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
 			engine.addToMap("curvature", synth1, "rate", 
 					new RateMap(),

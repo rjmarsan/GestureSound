@@ -25,9 +25,9 @@ Out.ar([0,1], TGrains.ar(2,Impulse.ar(1/(trigRate*dur)),buffer,rate,centerPos,du
 }).store;
 
 
-b = Buffer.read(s, "/Users/rj/Documents/workspace/MT4j/data/sounds/amiu.aif");
+b = Buffer.read(s, "/Users/rj/Documents/workspace/MT4j/data/sounds/weirdfish.aif");
 pwd
-
+b.play();
 g = Synth(\grannyyy, [\trigRate, 1, \buffer, 1]);
 g.set(\trigRate, 10);
 g.set(\centerPos, 2.3);
