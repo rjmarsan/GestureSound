@@ -38,45 +38,13 @@ public class Curvature extends Quality {
 	}
 
 	@Override
-	public void update(InputCursor in) {
+	public float update(InputCursor in) {
 		double val=0.0f;
 		
 		val = (float) (findCurvature(in)/(Math.PI));
 		
 		pastValues.add(new double[]{val});
 		
-		//filter, no. average? Yes.
-//		float pastEvtCount = in.getEvents(10).size();
-//		val = (currentValue*pastEvtCount + val)/(pastEvtCount+1);
-		
-//		int size = in.getEvents(200).size();
-//		//if (size > 2) { //this is the.... other method. using least squares.
-//		if (size < 0) { //nonsense, for now.
-//			//size=3;
-//			double[][] b = new double[size][2];
-//			double[][] a = new double[size][2];
-//			int pastValuesSize = pastValues.size();
-//			System.out.println("Size of pastValuesL: "+pastValuesSize+" Size of b:"+size);
-//			for (int x = 0; x < size; x++) {
-//				b[x][0] = pastValues.get(pastValuesSize-x-1)[0];
-//				b[x][1] = size-x;
-//				a[x][0] = 1;
-//				a[x][1] = x+1;
-//			}
-//	
-//			
-//			Matrix A = new Matrix(a);
-//			Matrix B = new Matrix(b);
-//			System.out.println("A: "+A+" B:"+B);
-//			Matrix sol = A.solve(B);
-//			System.out.println(sol);
-//			for (double[] row : sol.getArray())
-//				System.out.println("Row: ["+row[0]+","+row[1]+"]");
-//			val = (float) sol.getArray()[0][0];
-//		}
-//		if (size > 2) {
-//			
-//		}
 		//this is the spline method http://www.faculty.idc.ac.il/arik/Java/ex2/index.html
 		int n=15;
 		List<AbstractCursorInputEvt> past = in.getEvents();
@@ -96,15 +64,8 @@ public class Curvature extends Quality {
 		}
 		
 		//System.out.println("Curvature: "+val);
-		//filter.correct(new Matrix(new double[][]{{val}}));
-		//filter.predict();
-		//System.out.println("0:"+filter.getX().get(0,0));
-		//System.out.println("1:"+filter.getX().get(1,0));
-		//System.out.println("2:"+filter.getX().get(2,0));
-		//val = (float) filter.getX().get(0,0);
-		//System.out.println("Curvature: "+val);
 		currentValue = val;
-		engine.gestureQualityChange(name, (float)val, in);
+		return (float)val;
 	}
 		
 	private double findCurvature(InputCursor in) {

@@ -17,7 +17,7 @@ public abstract class Quality {
 		this.engine=engine;
 	}
 	
-	public abstract void update(InputCursor in);
+	public abstract float update(InputCursor in);
 	
 	public abstract float getCurrentValue();
 }

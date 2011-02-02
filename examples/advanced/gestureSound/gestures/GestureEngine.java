@@ -16,9 +16,12 @@ import advanced.gestureSound.gestures.qualities.Curvature;
 import advanced.gestureSound.gestures.qualities.Quality;
 import advanced.gestureSound.gestures.qualities.Velocity;
 import advanced.gestureSound.input.InputDelegate;
+import advanced.gestureSound.weki.OSCWekinatorInManager;
+import advanced.gestureSound.weki.OSCWekinatorOutManager;
+import advanced.gestureSound.weki.OSCWekinatorInManager.WekiInListener;
 import de.sciss.jcollider.Synth;
 
-public class GestureEngine {
+public class GestureEngine implements WekiInListener {
 	public static class SynthInfo {
 		public Synth synth;
 		public String parameter;
@@ -51,31 +54,46 @@ public class GestureEngine {
 	}
 	
 
-	public HashMap<String, ArrayList<SynthInfo>> map;
-	public HashMap<String, HashMap<InputCursor, Quality>> qualities;
+	public ArrayList<SynthInfo> outSynthParams;
+	//public HashMap<String, HashMap<InputCursor, Quality>> qualities;
+	public HashMap<InputCursor, GestureParamGenerator> inCursorToGeneratorMap;
 	public HashMap<InputCursor, KalmanFilter> filters;
 	public static PApplet applet;
 	
+	public OSCWekinatorOutManager wekinatorOut = new OSCWekinatorOutManager();
+	public OSCWekinatorInManager wekinatorIn;
+	
 	public GestureEngine(PApplet app, InputDelegate in) {
 		applet = app;
-		map = new HashMap<String, ArrayList<SynthInfo>>();
-		qualities =  new HashMap<String, HashMap<InputCursor,Quality>>();
-		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
-		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
+		outSynthParams = new ArrayList<SynthInfo>();
+//		qualities =  new HashMap<String, HashMap<InputCursor,Quality>>();
+//		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
+//		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
 		filters = new HashMap<InputCursor, KalmanFilter>();
+		setWekinatorIn(this);
 		setupCursorListener(in);
 	}
 	
 	
-	public void addToMap(String quality, Synth synth, String param, ParamMap pMap) {
-		addToMap(quality,synth,param,pMap, new Zone());
+	public void setWekinatorIn(WekiInListener in) {
+		wekinatorIn = new OSCWekinatorInManager(in);
 	}
 	
-	public void addToMap(String quality, Synth synth, String param, ParamMap pMap, Zone z) {
-		if (!map.containsKey(quality))
-			map.put(quality, new ArrayList<SynthInfo>());
-		map.get(quality).add(new SynthInfo(synth,param,pMap,z));
+	/**
+	 * These guys setup the output parameters, 
+	 * so we send info about the gestures to the wekinator, and it sends us back the parameters for these.
+	 * @param synth
+	 * @param param
+	 * @param pMap
+	 */
+	public void addToOutMap(Synth synth, String param, ParamMap pMap) {
+		addToOutMap(synth,param,pMap, new Zone());
 	}
+	
+	public void addToOutMap(Synth synth, String param, ParamMap pMap, Zone z) {
+		outSynthParams.add(new SynthInfo(synth,param,pMap,z));
+	}
+
 
 	
 	public void setupCursorListener(final InputDelegate in) {
@@ -117,8 +135,10 @@ public class GestureEngine {
 	}
 	
 	public void addQualitiesForCursor(InputCursor in) {
-		qualities.get(Curvature.name).put(in, new Curvature(this));
-		qualities.get(Velocity.name).put(in, new Velocity(this));
+		ArrayList<Quality> q = new ArrayList<Quality>();
+		q.add(new Curvature(this));
+		q.add(new Velocity(this));
+		inCursorToGeneratorMap.put(in, new GestureParamGenerator(q));
 	}
 	
 	public InputCursor filter(InputCursor in) {
@@ -134,32 +154,21 @@ public class GestureEngine {
 	}
 	
 	public void updateEngine(InputCursor in) {
-		for (HashMap<InputCursor,Quality> cursorAndQualities : qualities.values()) {
-			if (cursorAndQualities.containsKey(in))
-				cursorAndQualities.get(in).update(in);
+		if (inCursorToGeneratorMap.containsKey(in)) {
+			Float[] inParams = inCursorToGeneratorMap.get(in).update(in);
+			wekinatorOut.updateParam(inParams);
+			wekinatorOut.send();
 		}
 	}
 	
-	public float getCurrentValue(String name) {
-		for (Quality qual : qualities.get(name).values()) {
-			return qual.getCurrentValue();
-		}
-		return Float.NaN;
-	}
 	
-	public float getCurrentValue(String name, InputCursor cursor) {
-		if (qualities.get(name).containsKey(cursor)) {
-			return qualities.get(name).get(cursor).getCurrentValue();
-		}
-		return Float.NaN;
-	}
 
 	
 	
 
 
 	public void gestureQualityChange(String quality, float val, InputCursor in) {
-		for (SynthInfo info : map.get(quality) ) {
+		for (SynthInfo info : outSynthParams ) {
 			if (info.zone.in(in)) {
 				try {
 					info.synth.set(info.parameter, info.pMap.map(val));
@@ -171,6 +180,39 @@ public class GestureEngine {
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public void outParamUpdate(Float[] vals) {
+		int i=0;
+		for (SynthInfo info : outSynthParams ) {
+			try {
+				info.synth.set(info.parameter, info.pMap.map(vals[i]));
+				
+			} catch (IOException e) {
+				/**
+				 * oops. not our problem.
+				 */
+				e.printStackTrace();
+			}
+			i++;
+		}
+	}
+
+
+	@Override
+	public void startSound() {
+		// TODO Auto-generated method stub
+		
+		
+	}
+
+
+	@Override
+	public void stopSound() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

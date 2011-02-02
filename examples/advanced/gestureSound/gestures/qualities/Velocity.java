@@ -27,7 +27,7 @@ public class Velocity extends Quality {
 	}
 
 	@Override
-	public void update(InputCursor in) {
+	public float update(InputCursor in) {
 		float val=0.0f;
 		
 		val =findVelocity(in);
@@ -40,7 +40,7 @@ public class Velocity extends Quality {
 //		val = (float) filter.getX().get(0,0);
 //		System.out.println("Velocity: "+val);
 		currentValue = val;
-		engine. gestureQualityChange(name, val, in);
+		return val;
 	}
 	private float findVelocity(InputCursor in) {
 		return in.getVelocityVector().length();

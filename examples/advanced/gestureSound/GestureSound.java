@@ -78,21 +78,27 @@ public class GestureSound extends MTComponent {
 	}
 	
 	
-	public static class OSCMap implements ParamMap {
-		public static OSCManager man = new OSCManager();
-		
-		public final String name;
-		public OSCMap(String name) {
-			this.name = name;
-			man.addParam(name);
-		}
-		
+//	public static class DummyMap implements ParamMap {
+//		public static OSCManager man = new OSCManager();
+//		
+//		public final String name;
+//		public OSCMap(String name) {
+//			this.name = name;
+//			man.addParam(name);
+//		}
+//		
+//		public float map(float in) {
+//			man.updateParam(name, in);
+//			man.send();
+//			return in;
+//		}
+//	}
+	public static class DummyMap implements ParamMap {		
 		public float map(float in) {
-			man.updateParam(name, in);
-			man.send();
 			return in;
 		}
 	}
+
 	
 	public static class CenterPosMap implements ParamMap { 
 		public float pos = 0f;
@@ -157,21 +163,10 @@ public class GestureSound extends MTComponent {
 			System.out.println("Loading sample at: "+f.getAbsolutePath());
 			b = Buffer.read(sc.server,f.getAbsolutePath());
 			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
-			engine.addToMap("curvature", synth1, "centerPos", 
-					//new CenterPosMap(),
-					new OSCMap("curvature"),
-					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
-			engine.addToMap("velocity", synth1, "trigRate", 
-					//new TrigRateMap(),
-					new OSCMap("velocity"),
-					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,1)||inQuadrant(in,4);}});
-			engine.addToMap("curvature", synth1, "rate", 
-					new RateMap(),
-					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
-			engine.addToMap("velocity", synth1, "amp", 
-					new VelocityMap(), 
-					new Zone() { @Override public boolean in(InputCursor in) {return inQuadrant(in,2)||inQuadrant(in,3);}});
-
+			engine.addToOutMap(synth1, "centerPos", new CenterPosMap());
+			engine.addToOutMap(synth1, "trigRate", new TrigRateMap());
+			engine.addToOutMap(synth1, "rate", new RateMap());
+			engine.addToOutMap(synth1, "amp", new VelocityMap());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -186,13 +181,13 @@ public class GestureSound extends MTComponent {
 		
 		for (InputCursor in : ins) {
 			if (in.getFirstEvent().getPosX() < this.applet.width/2) { //its on the left half of the screen
-				lastLeft1 = engine.getCurrentValue("curvature", in)*30;
-				lastLeft2 = engine.getCurrentValue("velocity", in)*2;
+//				lastLeft1 = engine.getCurrentValue("curvature", in)*30;
+//				lastLeft2 = engine.getCurrentValue("velocity", in)*2;
 				g.fill(255,255,0);
 			}
 			else {
-				lastRight1 = engine.getCurrentValue("curvature", in)*30;
-				lastRight2 = engine.getCurrentValue("velocity", in)*2;
+//				lastRight1 = engine.getCurrentValue("curvature", in)*30;
+//				lastRight2 = engine.getCurrentValue("velocity", in)*2;
 				g.fill(255,0,255);
 			}
 			
@@ -209,35 +204,6 @@ public class GestureSound extends MTComponent {
 				
 				
 			}
-			//try 1: cubic spline library
-//			if (sizeofpast > 2) {
-//				g.fill(0,0,0);
-//				CubicSpline s = new CubicSpline(x,y);
-//				s.setDerivLimits(3,5);
-//				Arrays.sort(x);
-//				for (double xx = x[0]; xx < x[x.length-1]; xx++) {
-//					g.rect((float)xx, (float)s.interpolate(xx), 1, 1);
-//				}
-//			}
-			//try 2: built-in spline library
-//			if (sizeofpast > 2) {
-//				g.fill(0,0,0);
-//				
-//				for (int count = sizeofpast-1; count >= 3; count-=3) {
-//					CubicCurve2D.Double s = new CubicCurve2D.Double(x[count],y[count],x[count-1],y[count-1],x[count-2],y[count-2],x[count-3],y[count-3]);
-//					//
-//					PathIterator pit = s.getPathIterator(null,0.1);
-//					double[] coords = new double[6];
-//			        while(!pit.isDone()) {
-//			            int type = pit.currentSegment(coords);
-//			           
-//						g.rect((float)coords[0], (float)coords[1], 1, 1);
-//			            pit.next();
-//
-//			        }
-//
-//				}
-//			}
 			//try 3: code from http://www.faculty.idc.ac.il/arik/Java/ex2/index.html
 			int n=7;
 
