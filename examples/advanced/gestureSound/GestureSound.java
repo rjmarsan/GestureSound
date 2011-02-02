@@ -3,8 +3,6 @@ package advanced.gestureSound;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +17,10 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import advanced.gestureSound.gestures.GestureEngine;
 import advanced.gestureSound.gestures.GestureEngine.ParamMap;
-import advanced.gestureSound.gestures.GestureEngine.Zone;
+import advanced.gestureSound.gestures.GestureEngine.SynthCommand;
 import advanced.gestureSound.input.InputDelegate;
 import de.sciss.jcollider.Buffer;
 import de.sciss.jcollider.Synth;
-import de.sciss.net.OSCClient;
-import de.sciss.net.OSCMessage;
-import de.sciss.net.OSCServer;
 
 public class GestureSound extends MTComponent {
 
@@ -167,6 +162,9 @@ public class GestureSound extends MTComponent {
 			engine.addToOutMap(synth1, "trigRate", new TrigRateMap());
 			engine.addToOutMap(synth1, "rate", new RateMap());
 			engine.addToOutMap(synth1, "amp", new VelocityMap());
+			engine.addStopCommand(new SynthCommand(synth1, "amp", 0));
+			engine.addStartCommand(new SynthCommand(synth1, "amp", 1));
+			synth1.set("amp", 0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -30,6 +30,7 @@ public class OSCWekinatorOutManager {
 	
 	public void send() {
 		//System.out.println("Sending: "+params[0]);
+		if (params == null) return;
 		OSCMessage msg = new OSCMessage("/oscCustomFeatures", params);
 		try {
 			s.send(msg, new InetSocketAddress( "localhost", 6448 ));

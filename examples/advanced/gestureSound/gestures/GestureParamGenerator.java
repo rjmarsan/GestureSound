@@ -13,6 +13,7 @@ public class GestureParamGenerator {
 	public GestureParamGenerator(ArrayList<Quality> qualities) {
 		this.qualities = qualities;
 		numQualities = qualities.size();
+		System.out.println("Generator started with "+numQualities+" parameters");
 	}
 	
 	
@@ -21,6 +22,7 @@ public class GestureParamGenerator {
 		int i=0;
 		for (Quality q : qualities) {
 			vals[i] = q.update(in);
+			i++;
 		}
 		return vals;
 	}

@@ -31,6 +31,21 @@ public class GestureEngine implements WekiInListener {
 			this.synth = synth; this.parameter = param; this.pMap = pMap; this.zone = z;
 		}
 	}
+	public static class SynthCommand {
+		public Synth synth;
+		public String parameter;
+		public float value;
+		public SynthCommand(Synth synth, String param, float value) {
+			this.synth = synth; this.parameter = param; this.value = value;
+		}
+		public void fire() {
+			try {
+				synth.set(parameter, value);
+			} catch (IOException e) {
+			}
+		}
+	}
+
 	public static interface ParamMap {
 		/**
 		 * Map from the range [-1..1] to whatever the synth param takes
@@ -63,6 +78,9 @@ public class GestureEngine implements WekiInListener {
 	public OSCWekinatorOutManager wekinatorOut = new OSCWekinatorOutManager();
 	public OSCWekinatorInManager wekinatorIn;
 	
+	private SynthCommand startCommand;
+	private SynthCommand endCommand;
+	
 	public GestureEngine(PApplet app, InputDelegate in) {
 		applet = app;
 		outSynthParams = new ArrayList<SynthInfo>();
@@ -70,6 +88,7 @@ public class GestureEngine implements WekiInListener {
 //		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
 //		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
 		filters = new HashMap<InputCursor, KalmanFilter>();
+		inCursorToGeneratorMap = new HashMap<InputCursor, GestureParamGenerator>();
 		setWekinatorIn(this);
 		setupCursorListener(in);
 	}
@@ -93,6 +112,15 @@ public class GestureEngine implements WekiInListener {
 	public void addToOutMap(Synth synth, String param, ParamMap pMap, Zone z) {
 		outSynthParams.add(new SynthInfo(synth,param,pMap,z));
 	}
+	
+	public void addStartCommand(SynthCommand s) {
+		startCommand = s;
+	}
+	
+	public void addStopCommand(SynthCommand s) {
+		endCommand = s;
+	}
+	
 
 
 	
@@ -156,6 +184,7 @@ public class GestureEngine implements WekiInListener {
 	public void updateEngine(InputCursor in) {
 		if (inCursorToGeneratorMap.containsKey(in)) {
 			Float[] inParams = inCursorToGeneratorMap.get(in).update(in);
+			System.out.println("inParams:"+inParams);
 			wekinatorOut.updateParam(inParams);
 			wekinatorOut.send();
 		}
@@ -203,16 +232,14 @@ public class GestureEngine implements WekiInListener {
 
 	@Override
 	public void startSound() {
-		// TODO Auto-generated method stub
-		
+		startCommand.fire();
 		
 	}
 
 
 	@Override
 	public void stopSound() {
-		// TODO Auto-generated method stub
-		
+		endCommand.fire();
 	}
 	
 	

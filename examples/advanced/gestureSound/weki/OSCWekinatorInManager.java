@@ -25,10 +25,9 @@ public class OSCWekinatorInManager implements OSCListener {
 	
 	public OSCWekinatorInManager(WekiInListener callback) {
 		try {
-			c = OSCClient.newUsing(OSCClient.UDP, 0);
+			c = OSCClient.newUsing(OSCClient.UDP, 12000, true);
 			c.addOSCListener(this);
 			c.start();
-			//OSCServer.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,9 +36,22 @@ public class OSCWekinatorInManager implements OSCListener {
 	
 	@Override
 	public void messageReceived(OSCMessage arg0, SocketAddress arg1, long arg2) {
+		System.out.println("New message!"+arg0.getName()+" urm: size:"+arg0.getArgCount());
 		if (arg0.getArgCount() > 0) {
-			Object x = arg0.getArg(0);
-			System.out.println("New message!");
+			
+			if (arg0.getName().equalsIgnoreCase("/OSCSynth/sound")) {
+					callback.startSound();
+			}
+			else if (arg0.getName().equalsIgnoreCase("/OSCSynth/silent")) {
+					callback.stopSound();
+			}
+			else if (arg0.getName().equalsIgnoreCase("/OSCSynth/params")) {
+				Float[] vals = new Float[arg0.getArgCount()];
+				for (int i=0; i< vals.length; i++) {
+					vals[i] = (Float)arg0.getArg(i);
+				}
+				callback.outParamUpdate(vals);
+			}
 		}
 	}
 
