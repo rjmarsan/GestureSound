@@ -1,8 +1,6 @@
 package advanced.gestureSound;
 
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,17 +14,17 @@ import org.mt4j.sceneManagement.AbstractScene;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import advanced.gestureSound.gestures.GestureEngine;
-import advanced.gestureSound.gestures.GestureEngine.ParamMap;
-import advanced.gestureSound.gestures.GestureEngine.SynthCommand;
 import advanced.gestureSound.input.InputDelegate;
-import de.sciss.jcollider.Buffer;
-import de.sciss.jcollider.Synth;
+import advanced.gestureSound.instruments.BasicSineInstrument;
+import advanced.gestureSound.instruments.Instrument;
 
 public class GestureSound extends MTComponent {
 
 	PApplet applet;
 	GestureEngine engine;
 	InputDelegate inDelegate;
+	
+	Instrument instrument;
 	
 	SC sc;
 	List<InputCursor> ins;
@@ -35,7 +33,6 @@ public class GestureSound extends MTComponent {
 	float lastRight2 = 0f;
 	float lastLeft1 = 0f;
 	float lastLeft2 = 0f;
-	public static Buffer b;
 
 	public GestureSound(PApplet applet, final AbstractScene scene) {
 		super(applet);
@@ -69,108 +66,16 @@ public class GestureSound extends MTComponent {
 		sc = new SC();
 		sc.setupSupercollider();
 		
-		setupGestures();
+		setupInstrument();
 	}
 	
 	
-//	public static class DummyMap implements ParamMap {
-//		public static OSCManager man = new OSCManager();
-//		
-//		public final String name;
-//		public OSCMap(String name) {
-//			this.name = name;
-//			man.addParam(name);
-//		}
-//		
-//		public float map(float in) {
-//			man.updateParam(name, in);
-//			man.send();
-//			return in;
-//		}
-//	}
-	public static class DummyMap implements ParamMap {		
-		public float map(float in) {
-			return in;
-		}
+	private void setupInstrument() {
+		instrument = new BasicSineInstrument();
+		instrument.init(sc);
+		engine.setInstrument(instrument);
 	}
-
 	
-	public static class CenterPosMap implements ParamMap { 
-		public float pos = 0f;
-		public float dur = Float.NaN;
-		public float sensitivity = 0.05f;
-		public float map(float in) {
-			//if (dur == Float.NaN)
-				dur = (float) b.getDuration();
-			pos += in*sensitivity;
-			//pos = Math.min(Math.max(0, pos), dur);
-			pos = pos % dur;
-			//System.out.println("Pos:"+pos+" In:"+in+" Dur:"+dur);
-			return pos;
-	}}
-	public static class TrigRateMap implements ParamMap {
-		public static float sensitivity=1.1f;
-		public float map(float in) {
-			float val = (1/DurMap.durVal*(in*1.1f+0.5f));
-			//System.out.println("durVal:"+DurMap.durVal+"velocity:" + in+" TrigRate:"+val);
-			if (b.getDuration() != Float.NaN) {
-				//val = Math.min(Math.max(0f, val), (float)b.getDuration());
-			}
-			return val;
-		    //return in*4;	
-		}
-	}
-	public static class DurMap implements ParamMap {
-		public static float durVal = 0.2f;
-		public static float sensitivity=2.7f;
-		public static float middle = 0.2f;
-		
-		public float map(float in) {
-				float pos = in*sensitivity;
-				//durVal = ((float)b.getDuration());
-				durVal = (float) Math.pow(sensitivity, pos)*middle;
-				//durVal = (float)((in*sensitivity*b.getDuration()/2f)+/2f);
-				if (b.getDuration() != Float.NaN) {
-					durVal = Math.min(Math.max(0.01f, durVal), (float)b.getDuration());
-				}
-				System.out.println("durVal:"+durVal);
-				return durVal; 
-		}
-	}
-	public static class RateMap implements  ParamMap { 
-		public float sensitivity = 1.0f;
-		public static float rateVal = 1.0f;
-		public float map(float in) {
-			rateVal = 1+in*sensitivity;
-			System.out.println("rate:"+rateVal);
-			return rateVal; }
-	}
-
-	public static class VelocityMap implements  ParamMap { 
-		public float sensitivity = 0.08f;
-		public float map(float in) {return in*sensitivity; }
-	}
-
-	
-	void setupGestures() {
-		try {
-			File f = new File("data/sounds/amiu.aif");
-			System.out.println("Loading sample at: "+f.getAbsolutePath());
-			b = Buffer.read(sc.server,f.getAbsolutePath());
-			Synth synth1 = new Synth("grannyyy", new String[] {"trigRate", "buffer", "dur"}, new float[] { 10, b.getBufNum(), 0.1f }, sc.grpAll);
-			engine.addToOutMap(synth1, "centerPos", new CenterPosMap());
-			engine.addToOutMap(synth1, "trigRate", new TrigRateMap());
-			engine.addToOutMap(synth1, "rate", new RateMap());
-			engine.addToOutMap(synth1, "amp", new VelocityMap());
-			engine.addStopCommand(new SynthCommand(synth1, "amp", 0));
-			engine.addStartCommand(new SynthCommand(synth1, "amp", 1));
-			synth1.set("amp", 0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	
 	@Override
 	public void drawComponent(PGraphics g) {

@@ -18,9 +18,9 @@ public class OSCWekinatorInManager implements OSCListener {
 	
 	
 	public interface WekiInListener {
-		public void outParamUpdate(Float[] vals);
-		public void startSound();
-		public void stopSound();
+		public void update(float[] vals);
+		public void start();
+		public void stop();
 	}
 	
 	public OSCWekinatorInManager(WekiInListener callback) {
@@ -40,17 +40,17 @@ public class OSCWekinatorInManager implements OSCListener {
 		if (arg0.getArgCount() > 0) {
 			
 			if (arg0.getName().equalsIgnoreCase("/OSCSynth/sound")) {
-					callback.startSound();
+					callback.start();
 			}
 			else if (arg0.getName().equalsIgnoreCase("/OSCSynth/silent")) {
-					callback.stopSound();
+					callback.stop();
 			}
 			else if (arg0.getName().equalsIgnoreCase("/OSCSynth/params")) {
-				Float[] vals = new Float[arg0.getArgCount()];
+				float[] vals = new float[arg0.getArgCount()];
 				for (int i=0; i< vals.length; i++) {
 					vals[i] = (Float)arg0.getArg(i);
 				}
-				callback.outParamUpdate(vals);
+				callback.update(vals);
 			}
 		}
 	}

@@ -21,7 +21,7 @@ import advanced.gestureSound.weki.OSCWekinatorOutManager;
 import advanced.gestureSound.weki.OSCWekinatorInManager.WekiInListener;
 import de.sciss.jcollider.Synth;
 
-public class GestureEngine implements WekiInListener {
+public class GestureEngine  {
 	public static class SynthInfo {
 		public Synth synth;
 		public String parameter;
@@ -78,26 +78,19 @@ public class GestureEngine implements WekiInListener {
 	public OSCWekinatorOutManager wekinatorOut = new OSCWekinatorOutManager();
 	public OSCWekinatorInManager wekinatorIn;
 	
-	private SynthCommand startCommand;
-	private SynthCommand endCommand;
-	
 	public GestureEngine(PApplet app, InputDelegate in) {
 		applet = app;
 		outSynthParams = new ArrayList<SynthInfo>();
-//		qualities =  new HashMap<String, HashMap<InputCursor,Quality>>();
-//		qualities.put(Curvature.name, new HashMap<InputCursor,Quality>()) ;
-//		qualities.put(Velocity.name, new HashMap<InputCursor,Quality>()) ;
 		filters = new HashMap<InputCursor, KalmanFilter>();
 		inCursorToGeneratorMap = new HashMap<InputCursor, GestureParamGenerator>();
-		setWekinatorIn(this);
 		setupCursorListener(in);
 	}
 	
 	
-	public void setWekinatorIn(WekiInListener in) {
+	public void setInstrument(WekiInListener in) {
 		wekinatorIn = new OSCWekinatorInManager(in);
 	}
-	
+		
 	/**
 	 * These guys setup the output parameters, 
 	 * so we send info about the gestures to the wekinator, and it sends us back the parameters for these.
@@ -112,16 +105,6 @@ public class GestureEngine implements WekiInListener {
 	public void addToOutMap(Synth synth, String param, ParamMap pMap, Zone z) {
 		outSynthParams.add(new SynthInfo(synth,param,pMap,z));
 	}
-	
-	public void addStartCommand(SynthCommand s) {
-		startCommand = s;
-	}
-	
-	public void addStopCommand(SynthCommand s) {
-		endCommand = s;
-	}
-	
-
 
 	
 	public void setupCursorListener(final InputDelegate in) {
@@ -211,37 +194,5 @@ public class GestureEngine implements WekiInListener {
 		}
 	}
 
-
-	@Override
-	public void outParamUpdate(Float[] vals) {
-		int i=0;
-		for (SynthInfo info : outSynthParams ) {
-			try {
-				info.synth.set(info.parameter, info.pMap.map(vals[i]));
-				
-			} catch (IOException e) {
-				/**
-				 * oops. not our problem.
-				 */
-				e.printStackTrace();
-			}
-			i++;
-		}
-	}
-
-
-	@Override
-	public void startSound() {
-		startCommand.fire();
-		
-	}
-
-
-	@Override
-	public void stopSound() {
-		endCommand.fire();
-	}
-	
-	
 
 }
