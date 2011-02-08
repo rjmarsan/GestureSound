@@ -4,22 +4,40 @@ import java.util.ArrayList;
 
 import org.mt4j.input.inputData.InputCursor;
 
+import advanced.gestureSound.gestures.generators.Generator;
+import advanced.gestureSound.gestures.generators.HistoryGenerator;
 import advanced.gestureSound.gestures.qualities.Quality;
 
 public class GestureParamGenerator {
 
-	public static final int HISTORY_SIZE = 10;
+	public class QualityGenerators {
+		public Quality q;
+		public ArrayList<Generator> g;
+		public QualityGenerators(Quality _q, ArrayList<Generator> _g) { q=_q; g=_g; }
+	}
 	
-	ArrayList<Quality> qualities;
+	ArrayList<QualityGenerators> qualities;
 	int numQualities;
+	
 	public GestureParamGenerator(ArrayList<Quality> qualities) {
-		this.qualities = qualities;
+		this.qualities = new ArrayList<QualityGenerators>();
+		for (Quality q : qualities) {
+			ArrayList<Generator> g = new ArrayList<Generator>();
+			g.add(new HistoryGenerator());
+			this.qualities.add(new QualityGenerators(q,g));
+		}
 		numQualities = qualities.size();
 		System.out.println("Generator started with "+getNumGeneratedParams()+" parameters");
 	}
 	
 	public int getNumGeneratedParams() {
-		return numQualities*(HISTORY_SIZE*3);
+		int num = 0;
+		for (QualityGenerators qg : qualities) {
+			for (Generator g : qg.g) {
+				num += g.getLength();
+			}
+		}
+		return num;
 	}
 	
 	public Float[] update(InputCursor in) {
@@ -29,36 +47,34 @@ public class GestureParamGenerator {
 		
 		//calculate the original qualities, and the history of them
 		//now with more delta!
-		for (Quality q : qualities) {
-			float x = q.update(in);
-			//history
-			writeHistory(vals,i*HISTORY_SIZE,HISTORY_SIZE,x);
-			i++;
-			//history of 1st order diff
-			writeDeltaHistory(vals,i*HISTORY_SIZE,HISTORY_SIZE, (i-1)*HISTORY_SIZE);
-			i++;
-			//history of 2nd order diff
-			writeDeltaHistory(vals,i*HISTORY_SIZE,HISTORY_SIZE, (i-1)*HISTORY_SIZE);
-			i++;
+		for (QualityGenerators qg : qualities) {
+			Quality q = qg.q;
+			float newval = q.update(in);
+			for (Generator g : qg.g) {
+				Float[] newvals = g.update(newval);
+				i=writeAll(vals, newvals, i);
+			}
 		}
 		
-		
+		printAll(vals);
 		return vals;
 	}
 	
-	private void writeHistory(Float[] a, int start, int size, float newval) {
-		for (int i=0;i<(size-1);i++) {
-			a[start+i] = a[start+i+1];
+	private int writeAll(Float[] out, Float[] in, int start) {
+		for (int i=0;i<in.length;i++) {
+			out[start+i] = in[i];
 		}
-		a[start+size-1] = newval;
+		return in.length+start;
 	}
 	
-	//writes the delta of the history you pass in.... techincally the last value will have nothing written. but whatever.
-	private void writeDeltaHistory(Float[] a, int start, int size, int nondeltaStart) {
-		for (int i=0;i<(size-1);i++) {
-			a[start+i] = a[nondeltaStart+1]-a[nondeltaStart];
+	private void printAll(Float[] array) {
+		System.out.print("[");
+		for (int i=0;i<array.length;i++) {
+			System.out.print(array[i]+",");
 		}
+		System.out.print("]\n");
 	}
+
 
 	
 	

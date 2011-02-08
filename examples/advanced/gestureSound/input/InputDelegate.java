@@ -102,7 +102,8 @@ public class InputDelegate extends MTComponent {
 			public void tick() {
 				synchronized(m.getEvents()) {
 
-					if (currentVec.length() < 1) { 
+					//if (currentVec.length() < 1) { 
+					if (true) {
 						m.getEvents().add(posEvt);
 						fireInputEvent(posEvt);
 						done();
@@ -180,7 +181,7 @@ public class InputDelegate extends MTComponent {
 				f.tick();
 				if (f.done){
 					i.remove();
-				}
+				}//uncomment when done
 			}
 			
 
